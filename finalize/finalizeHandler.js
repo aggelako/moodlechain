@@ -1,7 +1,9 @@
 $(document).ready(function () {
     $("#finalize_button").click(function () {
+        // console.log($(this).data);
         const courseId = $(this).data("courseId");
-        console.log($(this).data("grades"));
+        var jsonData = $(this).data("grades");
+        console.log(jsonData);
         Swal.fire({
             title: 'Are you sure you want to finalize?',
             text: "",
@@ -20,13 +22,21 @@ $(document).ready(function () {
                     url: "handleFinalize.php",
                     data: {id: courseId},
                     success: function(response) {
-                        var csvData = 'data:text/csv;charset=utf-8,' + encodeURI(response.csvdata);
-                        var link = document.createElement('a');
-                        link.setAttribute('href', csvData);
-                        link.setAttribute('download', 'grades.csv');
+                        var csvData = ["userid", "courseid", "time"].join(",");
+                        csvData += "\n";
+                        csvData += [jsonData[0].userid, jsonData[0].courseid, jsonData[0].time].join(",");
+                        csvData += "\n";
+                        csvData += ["username", "activity_name", "grade"].join(",");
+                        csvData += "\n";
+                        csvData += jsonData[0].grades.map(function(grade) {
+                            return [grade.username, grade.activity_name, grade.rawgrade].join(",");
+                        }).join("\n");
+                        var blob = new Blob([csvData],{type: "text/csv"});
+                        var link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "grade_data.csv";
                         link.click();
                         console.log("The button was pressed and the request was successful.");
-                        console.log(response.csvdata);
                         require(['core/notification'], function(notification) {
                             notification.addNotification({
                                 message: "Grades have been exported successfully!",

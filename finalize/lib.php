@@ -32,12 +32,13 @@ require_once($CFG->libdir.'/tablelib.php');
  */
 class grade_report_grader_finalize extends grade_report_grader
 {
+    private $finalize_grading_object;
     public function get_raw_grades() {
-        $grades = array();
+        $this->finalize_grading_object = array();
         foreach ($this->users as $user) {
             foreach ($this->gtree->items as $item) {
                 if (!empty($this->grades[$user->id][$item->id]->rawgrade)) {
-                    $grades[] = array(
+                    $this->finalize_grading_object[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'activity_name' => $item->get_name(),
@@ -45,7 +46,7 @@ class grade_report_grader_finalize extends grade_report_grader
                     );
                 }
                 else if(!empty($this->grades[$user->id][$item->id]->finalgrade)) {
-                    $grades[] = array(
+                    $this->finalize_grading_object[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'activity_name' => 'Final Grade',
@@ -55,8 +56,25 @@ class grade_report_grader_finalize extends grade_report_grader
             }
 
         }
-        return $grades;
     }
+    public function get_finalize_toJson(){
+        $this->get_raw_grades();
+        global $USER;
+        if(!empty($this->finalize_grading_object)){
+           $resultArray []= array(
+               "userid"=>$USER->id,
+               "courseid"=>$this->courseid,
+               "time"=>date("Y-m-d H:i:s",time()),
+               "grades"=>$this->finalize_grading_object
+           );
+           return json_encode($resultArray);
+       }
+       else{
+           return json_encode("yo");
+       }
+
+}
+
 
 
 
