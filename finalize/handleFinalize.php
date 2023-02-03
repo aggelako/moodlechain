@@ -31,6 +31,7 @@
  * @copyright 2010 Sam Hemelryk
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+//Isws xreiastei sto neo moodle installation, to $url->out
 //$url = new moodle_url($CFG->wwwroot . '/grade/report/finalize/handleFinalize.php');
 //$internal_url_finalize = $url->out();
 require_once('../../../config.php');
@@ -38,26 +39,16 @@ require_once($CFG->libdir . '/csvlib.class.php');
 
 // Get the current Moodle context
 global $USER, $DB;
-//if(isset($_POST['data'])) {
-//$context = context_system::instance();
-//
-//// Get the current user ID
 $userid = $USER->id;
 $courseid = required_param('id', PARAM_INT);
 
-
-//// Check if the current user has the required capability
-//        if (!has_capability('gradereport/finalize:export', $context)) {
-//            print_error('nopermissions', 'error', '', 'Export grades');
-//        }
-
-// Add a row to the gradereport_finalize_history table
+//Add a row to log the finalize event
 $grades = $DB->get_records('grade_grades', array('id' => $courseid));
 $record = new stdClass();
 $record->userid = $userid;
 $record->exportquery = 1;
 $record->time = time();
-$yo = $DB->insert_record('gradereport_finalize_history', $record);
+$DB->insert_record('gradereport_finalize_history', $record);
 
 
 $filename = clean_filename("grades");
@@ -73,10 +64,7 @@ foreach ($grades as $grade) {
     $data = array($student_id, $student_grade);
     $csvexport->add_data($data);
 }
-//$csvexport->download_file();
-
+$csvexport = $csvexport->print_csv_data(true);
 
 echo json_encode(['csvdata' => $csvexport]);
-//}
 
-// Show success notification

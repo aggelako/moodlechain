@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $("#finalize_button").click(function () {
         const courseId = $(this).data("courseId");
-
+        console.log($(this).data("grades"));
         Swal.fire({
             title: 'Are you sure you want to finalize?',
             text: "",
@@ -26,7 +26,7 @@ $(document).ready(function () {
                         link.setAttribute('download', 'grades.csv');
                         link.click();
                         console.log("The button was pressed and the request was successful.");
-                        console.log(response);
+                        console.log(response.csvdata);
                         require(['core/notification'], function(notification) {
                             notification.addNotification({
                                 message: "Grades have been exported successfully!",
@@ -37,6 +37,12 @@ $(document).ready(function () {
                     },
                     error: function(xhr, status, error) {
                         console.error("An error occurred: " + error);
+                        require(['core/notification'], function(notification) {
+                            notification.addNotification({
+                                message: "Something went wrong",
+                                type: "failure"
+                            });
+                        });
                     }
 
                 });
