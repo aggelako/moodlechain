@@ -8,6 +8,7 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="exportquery" TYPE="int" LENGTH="10" NOTNULL="true" />
                 <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="true"/>
             </FIELDS>

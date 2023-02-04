@@ -46,25 +46,10 @@ $courseid = required_param('id', PARAM_INT);
 $grades = $DB->get_records('grade_grades', array('id' => $courseid));
 $record = new stdClass();
 $record->userid = $userid;
+$record->courseid = $courseid;
 $record->exportquery = 1;
 $record->time = time();
 $DB->insert_record('gradereport_finalize_history', $record);
 
 
-$filename = clean_filename("grades");
-$csvexport = new csv_export_writer();
-
-$csvexport->set_filename($filename);
-$header = array('Student id', 'Grade');
-$csvexport->add_data($header);
-
-foreach ($grades as $grade) {
-    $student_id = $grade->userid;
-    $student_grade = $grade->rawgrade;
-    $data = array($student_id, $student_grade);
-    $csvexport->add_data($data);
-}
-$csvexport = $csvexport->print_csv_data(true);
-
-echo json_encode(['csvdata' => $csvexport]);
 

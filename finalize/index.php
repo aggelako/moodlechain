@@ -103,17 +103,7 @@ $displayaverages = true;
 if ($numusers == 0) {
     $displayaverages = false;
 }
-//for($j=5; $j <= 10; $j++){
-//    for( $i=1; $i <= 2; $i++){
-//        echo implode($report->grades[$j][$i]," ");
-//    }
-//}
-//var_dump($report->grades[3][2]->finalgrade);
-//foreach($report->get_raw_grades() as $item){
-//    var_dump($item["userid"], $item["activity_name"], $item["rawgrade"]);
-//}
-////var_dump($report->get_raw_grades());
-//echo($report->get_finalize_toJson());
+
 $reporthtml = $report->get_grade_table($displayaverages);
 echo $reporthtml;
 echo $OUTPUT->render_from_template('gradereport_finalize/button', array('courseId' => $courseid,'grades'=>$report->get_finalize_toJson()));
