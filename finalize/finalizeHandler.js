@@ -50,7 +50,7 @@ $(document).ready(function () {
                         require(['core/notification'], function(notification) {
                             notification.addNotification({
                                 message: "Something went wrong",
-                                type: "failure"
+                                type: "error"
                             });
                         });
                     }
