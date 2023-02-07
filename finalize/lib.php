@@ -15,24 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of the grader report class
+ * Definition of the finalize grader report class
  *
  * @package   gradereport_grader_finalize
- * @copyright 2007 Nicolas Connault
+ * @copyright 2023 Athanasios Angelakopoulos
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 /**
- * Class providing an API for the grader report building and displaying.
- * @uses grade_report_grader
- * @copyright 2007 Nicolas Connault
+ * Class providing an API for the finalize grades plugin to export the grades in a certain format.
+ * @uses grade_report_grader_finalize
+ * @copyright 2023 Athanasios Angelakopoulos
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_report_grader_finalize extends grade_report_grader
 {
     private $finalize_grading_object;
+
+    /**
+     * @return void
+     * Feeding values to finalize_grading_object, which is an array of [gradeitemname, userid, rawgrade]
+     * To include the final grade for each user as well, we noticed that in the $this->grades object
+     * the final grade for each user, has null value in the rawgrade and has its value in the finalgrade field
+     * so we take it from there
+     */
     public function get_raw_grades() {
         $this->finalize_grading_object = array();
         foreach ($this->users as $user) {
@@ -57,6 +65,12 @@ class grade_report_grader_finalize extends grade_report_grader
 
         }
     }
+
+    /**
+     * @return false|string
+     * Calls the above function to fill the finalize grading object and
+     * then turns it in the wanted json format
+     */
     public function get_finalize_toJson(){
         $this->get_raw_grades();
         global $USER;
@@ -70,7 +84,7 @@ class grade_report_grader_finalize extends grade_report_grader
            return json_encode($resultArray);
        }
        else{
-           return json_encode("yo");
+           return json_encode([]);
        }
 
 }

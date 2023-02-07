@@ -1,3 +1,4 @@
+//Event handler for finalize grades button click
 $(document).ready(function () {
     $("#finalize_button").click(function () {
         const courseId = $(this).data("courseId");
@@ -23,18 +24,18 @@ $(document).ready(function () {
                 });
             }
         });
-
+//function that handles, the data downloading, if we click yes on the dialog
         function handleSuccess(response) {
             const csvData = formatCSVData(jsonData);
             downloadCSV(csvData);
             displayNotification("Grades have been exported successfully!!", "success");
         }
-
+//function that handles the error, if there is one after the button is pressed
         function handleError(xhr, status, error) {
             console.error("An error occurred: " + error);
             displayNotification("Something went wrong", "error");
         }
-
+//Function that formats the jsonData we received for the grades finalization, into readabale csv.
         function formatCSVData(jsonData) {
             let csvData = ["userid", "courseid", "time"].join(",") + "\n";
             csvData += [jsonData[0].userid, jsonData[0].courseid, jsonData[0].time].join(",") + "\n";
@@ -45,7 +46,7 @@ $(document).ready(function () {
 
             return csvData;
         }
-
+//Function through which we download the csvdata in the previous made format
         function downloadCSV(csvData) {
             const blob = new Blob([csvData], { type: "text/csv" });
             const link = document.createElement("a");
@@ -53,7 +54,7 @@ $(document).ready(function () {
             link.download = "grade_data.csv";
             link.click();
         }
-
+//Function to display notification, to notify the user in case of success of failure
         function displayNotification(message, type) {
             require(['core/notification'], function(notification) {
                 notification.addNotification({
