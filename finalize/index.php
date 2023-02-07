@@ -41,11 +41,10 @@ $userid   = optional_param('userid', $USER->id, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $edit          = optional_param('edit', -1, PARAM_BOOL); // sticky editting mode
 $sortitemid    = optional_param('sortitemid', 0, PARAM_ALPHANUMEXT);
-
 $PAGE->set_url(new moodle_url($CFG->wwwroot . '/grade/report/finalize/index.php', array('id' => $courseid)));
 $PAGE->requires->css('/grade/report/finalize/css/finalize_button.css', true);
 $PAGE->set_pagelayout('report');
-
+$PAGE->requires->strings_for_js(array('buttonText','successMessage','errorMessage','popupMessage'), 'gradereport_finalize');
 // Basic access checks.
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     throw new \moodle_exception('invalidcourseid');
@@ -77,7 +76,7 @@ if (!isset($USER->grade_last_report)) {
     $USER->grade_last_report = array();
 }
 $USER->grade_last_report[$course->id] = 'grader';
-$reportname = get_string('pluginname', 'gradereport_grader');
+$reportname = get_string('pluginname', 'gradereport_finalize');
 // Do this check just before printing the grade header (and only do it once).
 grade_regrade_final_grades_if_required($course);
 
@@ -132,7 +131,7 @@ if ($numusers == 0) {
 
 $reporthtml = $report->get_grade_table($displayaverages);
 echo $reporthtml;
-echo $OUTPUT->render_from_template('gradereport_finalize/button', array('courseId' => $courseid,'grades'=>$report->get_finalize_toJson()));
+echo $OUTPUT->render_from_template('gradereport_finalize/button', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson()));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }

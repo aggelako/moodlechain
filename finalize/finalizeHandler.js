@@ -5,7 +5,7 @@ $(document).ready(function () {
         const jsonData = $(this).data("grades");
 
         Swal.fire({
-            title: 'Are you sure you want to finalize?',
+            title: M.str.gradereport_finalize.popupMessage,
             text: "",
             icon: 'warning',
             showCancelButton: true,
@@ -28,12 +28,12 @@ $(document).ready(function () {
         function handleSuccess(response) {
             const csvData = formatCSVData(jsonData);
             downloadCSV(csvData);
-            displayNotification("Grades have been exported successfully!!", "success");
+            displayNotification(M.str.gradereport_finalize.successMessage, "success");
         }
 //function that handles the error, if there is one after the button is pressed
         function handleError(xhr, status, error) {
             console.error("An error occurred: " + error);
-            displayNotification("Something went wrong", "error");
+            displayNotification(M.str.gradereport_finalize.errorMessage, "error");
         }
 //Function that formats the jsonData we received for the grades finalization, into readabale csv.
         function formatCSVData(jsonData) {
