@@ -38,45 +38,31 @@ require_once($CFG->dirroot . '/grade/report/finalize/lib.php');
 
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
+$page = optional_param('page', 0, PARAM_INT);
+$edit          = optional_param('edit', -1, PARAM_BOOL); // sticky editting mode
+$sortitemid    = optional_param('sortitemid', 0, PARAM_ALPHANUMEXT);
+
 $PAGE->set_url(new moodle_url($CFG->wwwroot . '/grade/report/finalize/index.php', array('id' => $courseid)));
 $PAGE->requires->css('/grade/report/finalize/css/finalize_button.css', true);
-$page = optional_param('page', 0, PARAM_INT);
-$perpage = optional_param('perpage', 5, PARAM_INT);  // How many per page.
-$baseurl = new moodle_url($CFG->wwwroot . '/grade/report/finalize/index.php', array('id' => $courseid, 'perpage' => $perpage));
+$PAGE->set_pagelayout('report');
+
 // Basic access checks.
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-    throw new moodle_exception('nocourseid');
+    throw new \moodle_exception('invalidcourseid');
 }
 require_login($course);
-$PAGE->set_pagelayout('report');
 $context = context_course::instance($course->id);
-require_capability('gradereport/finalize:view', $context);
-if (empty($userid)) {
-    require_capability('moodle/grade:viewall', $context);
-} else {
-    if (!$DB->get_record('user', array('id' => $userid, 'deleted' => 0)) || isguestuser($userid)) {
-        throw new moodle_exception('invaliduser');
-    }
-}
-$access = false;
-if (has_capability('moodle/grade:viewall', $context)) {
-    // Ok - can view all course grades.
-    $access = true;
-} else if ($userid == $USER->id && has_capability('moodle/grade:view', $context) && $course->showgrades) {
-    // Ok - can view own grades.
-    $access = true;
-} else if (has_capability('moodle/grade:viewall', context_user::instance($userid)) && $course->showgrades) {
-    // Ok - can view grades of this quizanalytics- parent most probably.
-    $access = true;
-}
 
-print_grade_page_head(
-    $courseid,
-    'report',
-    'finalize',
-    get_string('pluginname', 'gradereport_finalize') . ' - ' . $USER->firstname
-    . ' ' . $USER->lastname
-);
+// The report object is recreated each time, save search information to SESSION object for future use.
+if (isset($graderreportsifirst)) {
+    $SESSION->gradereport["filterfirstname-{$context->id}"] = $graderreportsifirst;
+}
+if (isset($graderreportsilast)) {
+    $SESSION->gradereport["filtersurname-{$context->id}"] = $graderreportsilast;
+}
+require_capability('gradereport/finalize:view', $context);
+require_capability('moodle/grade:viewall', $context);
+
 $gpr = new grade_plugin_return(
     array(
         'type' => 'report',
@@ -85,14 +71,54 @@ $gpr = new grade_plugin_return(
         'page' => $page
     )
 );
-$sortitemid    = optional_param('sortitemid', 0, PARAM_ALPHANUMEXT);
 
+// last selected report session tracking
+if (!isset($USER->grade_last_report)) {
+    $USER->grade_last_report = array();
+}
+$USER->grade_last_report[$course->id] = 'grader';
+$reportname = get_string('pluginname', 'gradereport_grader');
+// Do this check just before printing the grade header (and only do it once).
+grade_regrade_final_grades_if_required($course);
+
+// Print header
+print_grade_page_head(
+    $courseid,
+    'report',
+    'finalize',
+    get_string('pluginname', 'gradereport_finalize') . ' - ' . $USER->firstname
+    . ' ' . $USER->lastname,
+    false
+);
 $report = new grade_report_grader_finalize($courseid, $gpr, $context, $page, $sortitemid);
-$numusers = $report->get_numusers(true, true);
-
+// make sure separate group does not prevent view
+if ($report->currentgroup == -2) {
+    echo $OUTPUT->heading(get_string("notingroup"));
+    echo $OUTPUT->footer();
+    exit;
+}
+$warnings = [];
+$isediting = has_capability('moodle/grade:edit', $context) && isset($USER->editing) && $USER->editing;
+if ($isediting && ($data = data_submitted()) && confirm_sesskey()) {
+    // Processing posted grades & feedback here.
+    $warnings = $report->process_data($data);
+}
 $report->load_users();
 $report->load_final_grades();
 echo $report->group_selector;
+$numusers = $report->get_numusers(true, true);
+// User search
+$url = new moodle_url('/grade/report/grader/index.php', array('id' => $course->id));
+$firstinitial = $SESSION->gradereport["filterfirstname-{$context->id}"] ?? '';
+$lastinitial  = $SESSION->gradereport["filtersurname-{$context->id}"] ?? '';
+$totalusers = $report->get_numusers(true, false);
+$renderer = $PAGE->get_renderer('core_user');
+echo $renderer->user_search($url, $firstinitial, $lastinitial, $numusers, $totalusers, $report->currentgroupname);
+
+//show warnings if any
+foreach ($warnings as $warning) {
+    echo $OUTPUT->notification($warning);
+}
 $studentsperpage = $report->get_students_per_page();
 // Don't use paging if studentsperpage is empty or 0 at course AND site levels
 if (!empty($studentsperpage)) {
@@ -107,5 +133,8 @@ if ($numusers == 0) {
 $reporthtml = $report->get_grade_table($displayaverages);
 echo $reporthtml;
 echo $OUTPUT->render_from_template('gradereport_finalize/button', array('courseId' => $courseid,'grades'=>$report->get_finalize_toJson()));
+if (!empty($studentsperpage) && $studentsperpage >= 20) {
+    echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
+}
 echo $OUTPUT->footer();
 
