@@ -41,28 +41,31 @@ class grade_report_grader_finalize extends grade_report_grader
      * the final grade for each user, has null value in the rawgrade and has its value in the finalgrade field
      * so we take it from there
      */
-    public function get_raw_grades() {
+    public function get_raw_grades(){
         $this->finalize_grading_object = array();
-        foreach ($this->users as $user) {
-            foreach ($this->gtree->items as $item) {
+        foreach ($this->gtree->items as $item) {
+            $gradeitem = array();
+            foreach ($this->users as $user) {
                 if (!empty($this->grades[$user->id][$item->id]->rawgrade)) {
-                    $this->finalize_grading_object[] = array(
+                    $gradeitem[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'activity_name' => $item->get_name(),
                         'rawgrade' => $this->grades[$user->id][$item->id]->rawgrade
                     );
+                    $name = $item->get_name();
                 }
                 else if(!empty($this->grades[$user->id][$item->id]->finalgrade)) {
-                    $this->finalize_grading_object[] = array(
+                    $gradeitem[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'activity_name' => 'Final Grade',
                         'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade
                     );
+                    $name = 'Final Grade';
                 }
             }
-
+            $this->finalize_grading_object[$name] = $gradeitem;
         }
     }
 

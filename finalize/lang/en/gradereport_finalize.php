@@ -26,7 +26,7 @@
 $string['pluginname'] = 'Finalize grades';
 $string['user:view'] = 'View your class\' grades';
 $string['buttonText'] = 'Finalize grades';
-$string['successMessage'] = 'Grades loaded to ledger successfully';
+$string['successMessage'] = 'Grades loaded successfully';
 $string['errorMessage'] = 'An error occured';
 $string['popupMessage'] = 'Are you sure you want to finalize?';
 ?>
