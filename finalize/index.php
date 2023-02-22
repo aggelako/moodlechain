@@ -44,7 +44,8 @@ $sortitemid    = optional_param('sortitemid', 0, PARAM_ALPHANUMEXT);
 $PAGE->set_url(new moodle_url($CFG->wwwroot . '/grade/report/finalize/index.php', array('id' => $courseid)));
 $PAGE->requires->css('/grade/report/finalize/css/finalize_button.css', true);
 $PAGE->set_pagelayout('report');
-$PAGE->requires->strings_for_js(array('buttonText','successMessage','errorMessage','popupMessage'), 'gradereport_finalize');
+//needs update everytime we add a new string
+$PAGE->requires->strings_for_js(array('buttonText','successMessage','errorMessage','popupMessage', 'formNotCompleted','completeForm','SchoolId','Semester','AcademicYear','SubmitButton','CancelButton'), 'gradereport_finalize');
 // Basic access checks.
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     throw new \moodle_exception('invalidcourseid');

@@ -29,4 +29,11 @@ $string['buttonText'] = 'Finalize grades';
 $string['successMessage'] = 'Grades loaded successfully';
 $string['errorMessage'] = 'An error occured';
 $string['popupMessage'] = 'Are you sure you want to finalize?';
+$string['formNotCompleted'] = 'Make sure you complete all the required fields';
+$string['completeForm'] = 'Complete the form to finalize the grades';
+$string['SchoolId'] = 'School Id';
+$string['Semester'] = 'Semester';
+$string['AcademicYear'] = 'Academic year';
+$string['SubmitButton'] = 'Submit';
+$string['CancelButton'] = 'Cancel';
 ?>
