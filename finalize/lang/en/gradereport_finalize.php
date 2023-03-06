@@ -23,17 +23,18 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 // Index.
-$string['pluginname'] = 'Finalize grades';
+$string['pluginname'] = 'Moodlechain';
 $string['user:view'] = 'View your class\' grades';
 $string['buttonText'] = 'Finalize grades';
 $string['successMessage'] = 'Grades loaded successfully';
 $string['errorMessage'] = 'An error occured';
-$string['popupMessage'] = 'Are you sure you want to finalize?';
+$string['popupMessage'] = 'Moodlechain - Are you sure you want to finalize?';
 $string['formNotCompleted'] = 'Make sure you complete all the required fields';
-$string['completeForm'] = 'Complete the form to finalize the grades';
+$string['completeForm'] = 'Moodlechain - Complete the form';
 $string['SchoolId'] = 'School Id';
 $string['Semester'] = 'Semester';
 $string['AcademicYear'] = 'Academic year';
 $string['SubmitButton'] = 'Submit';
 $string['CancelButton'] = 'Cancel';
+//for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>
