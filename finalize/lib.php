@@ -50,7 +50,9 @@ class grade_report_grader_finalize extends grade_report_grader
                     $gradeitem[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
+                        'email'=> $user->email,
                         'activity_name' => $item->get_name(),
+                        'last updated' => date("Y-m-d H:i:s",$item->timemodified),
                         'rawgrade' => $this->grades[$user->id][$item->id]->rawgrade
                     );
                     $name = $item->get_name();
@@ -59,7 +61,9 @@ class grade_report_grader_finalize extends grade_report_grader
                     $gradeitem[] = array(
                         'userid' => $user->id,
                         'username' => $user->firstname . ' ' . $user->lastname,
+                        'email'=> $user->email,
                         'activity_name' => 'Final Grade',
+                        'last updated' => date("Y-m-d H:i:s",$item->timemodified),
                         'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade
                     );
                     $name = 'Final Grade';
@@ -78,19 +82,19 @@ class grade_report_grader_finalize extends grade_report_grader
         $this->get_raw_grades();
         global $USER;
         if(!empty($this->finalize_grading_object)){
-           $resultArray []= array(
-               "userid"=>$USER->id,
-               "courseid"=>$this->courseid,
-               "time"=>date("Y-m-d H:i:s",time()),
-               "grades"=>$this->finalize_grading_object
-           );
-           return json_encode($resultArray);
-       }
-       else{
-           return json_encode([]);
-       }
+            $resultArray []= array(
+                "userid"=>$USER->id,
+                "courseid"=>$this->courseid,
+                "time"=>date("Y-m-d H:i:s",time()),
+                "grades"=>$this->finalize_grading_object
+            );
+            return json_encode($resultArray);
+        }
+        else{
+            return json_encode([]);
+        }
 
-}
+    }
 
 
 
