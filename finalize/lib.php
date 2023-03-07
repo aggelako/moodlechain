@@ -52,7 +52,7 @@ class grade_report_grader_finalize extends grade_report_grader
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'email'=> $user->email,
                         'activity_name' => $item->get_name(),
-                        'last updated' => date("Y-m-d H:i:s",$item->timemodified),
+                        'last updated' => date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
                         'rawgrade' => $this->grades[$user->id][$item->id]->rawgrade
                     );
                     $name = $item->get_name();
@@ -63,7 +63,7 @@ class grade_report_grader_finalize extends grade_report_grader
                         'username' => $user->firstname . ' ' . $user->lastname,
                         'email'=> $user->email,
                         'activity_name' => 'Final Grade',
-                        'last updated' => date("Y-m-d H:i:s",$item->timemodified),
+                        'last updated' => date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
                         'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade
                     );
                     $name = 'Final Grade';
