@@ -132,7 +132,8 @@ if ($numusers == 0) {
 
 $reporthtml = $report->get_grade_table($displayaverages);
 echo $reporthtml;
-echo $OUTPUT->render_from_template('gradereport_finalize/button', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson()));
+require_once($CFG->dirroot . '/user/profile/lib.php');
+echo $OUTPUT->render_from_template('gradereport_finalize/button', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }

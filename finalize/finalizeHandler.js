@@ -3,6 +3,49 @@ $(document).ready(function (){
     $("#finalize_button").click(function () {
         const courseId = $(this).data("courseId");
         const jsonData = $(this).data("grades");
+        const walletKey = $(this).data("walletKey");
+        walletKeyPopUp();
+
+        function walletKeyPopUp(){
+            if (walletKey.length < 2 ) {
+                Swal.fire({
+                    title: "Provide your wallet key",
+                    input: 'text',
+                    inputPlaceholder: 'Enter your wallet key',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (walletKey) => {
+                        if(!walletKey){
+                            Swal.showValidationMessage(`Please provide your wallet key`);
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading(),
+                }).then((result) => {
+                    if (result.isConfirmed ) {
+                        $.ajax({
+                            url:'setWalletConfigs.php',
+                            type:"POST",
+                            data:{
+                                walletKey: result.value,
+                            },
+                            success: function (response) {
+                                console.log(response);
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
+                        // add data to custom field
+                        getExtraDataPopUp();
+                    }
+            });
+        }
+        }
+        function getExtraDataPopUp() {
             Swal.fire({
                 title: M.str.gradereport_finalize.completeForm,
                 html:
@@ -63,35 +106,9 @@ $(document).ready(function (){
                 },
             }).then((result) => {
                 if (result.isConfirmed && result.value) {
-                    Swal.fire({
-                        title: M.str.gradereport_finalize.popupMessage,
-                        html:
-                            '<label>School ID:</label><span>' + result.value.schoolId + '</span><br>' +
-                            '<label>Semester:</label><span>' + result.value.semester + '</span><br>' +
-                            '<label>Academic Year:</label><span>' + result.value.academicYear + '</span><br>',
-                        focusConfirm: false,
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No',
-                    }).then((confirmResult) => {
-                        if (confirmResult.value) {
-                            $.ajax({
-                                type: "POST",
-                                url: "handleFinalize.php",
-                                data: {
-                                    id: courseId,
-                                    school_id: result.value.schoolId,
-                                    semester: result.value.semester,
-                                    academic_year: result.value.academicYear
-                                },
-                                success: handleSuccess(result),
-                                error: handleError
-                            });
-                        }
-                    });
+                    confirmationPopUp(result);
                 }
             });
-            // Dynamically generate the options for the Academic Year field
             const academicYearSelect = document.querySelector('#academic-year-input');
             for (let i = 1980; i <= new Date().getFullYear() + 1; i++) {
                 const option = document.createElement('option');
@@ -99,6 +116,36 @@ $(document).ready(function (){
                 option.text = i;
                 academicYearSelect.appendChild(option);
             }
+        }
+        function confirmationPopUp(result) {
+            Swal.fire({
+                title: M.str.gradereport_finalize.popupMessage,
+                html:
+                    '<label>School ID:</label><span>' + result.value.schoolId + '</span><br>' +
+                    '<label>Semester:</label><span>' + result.value.semester + '</span><br>' +
+                    '<label>Academic Year:</label><span>' + result.value.academicYear + '</span><br>',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((confirmResult) => {
+                if (confirmResult.value) {
+                    $.ajax({
+                        type: "POST",
+                        url: "handleFinalize.php",
+                        data: {
+                            id: courseId,
+                            school_id: result.value.schoolId,
+                            semester: result.value.semester,
+                            academic_year: result.value.academicYear
+                        },
+                        success: handleSuccess(result),
+                        error: handleError
+                    });
+                }
+            });
+
+        }
 
 //function that handles, the data downloading, if we click yes on the dialog
             function handleSuccess(response) {
