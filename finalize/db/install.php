@@ -44,7 +44,7 @@ function xmldb_gradereport_finalize_install() {
         $custom_field->datatype = 'text';
         $custom_field->description = 'Wallet Address';
         $custom_field->descriptionformat = 1;
-        $custom_field->categoryid = $category;
+        $custom_field->categoryid = 0;
         $custom_field->sortorder = 1;
         $custom_field->required = 0;
         $custom_field->locked = 0;

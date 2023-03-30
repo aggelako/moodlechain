@@ -35,6 +35,7 @@ require_once('../../../config.php');
 require_once($CFG->dirroot . '/grade/lib.php');
 require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 require_once($CFG->dirroot . '/grade/report/finalize/lib.php');
+require_once($CFG->dirroot . '/user/profile/lib.php');
 
 $courseid = required_param('id', PARAM_INT);
 $userid   = optional_param('userid', $USER->id, PARAM_INT);
@@ -132,7 +133,10 @@ if ($numusers == 0) {
 
 $reporthtml = $report->get_grade_table($displayaverages);
 echo $reporthtml;
-require_once($CFG->dirroot . '/user/profile/lib.php');
+$walletKey = $USER->profile['wallet_address'];
+if($walletKey == null){
+    $walletKey = "";
+}
 echo $OUTPUT->render_from_template('gradereport_finalize/button', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
