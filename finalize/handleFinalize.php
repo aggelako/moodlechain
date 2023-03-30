@@ -43,7 +43,6 @@ $userid = $USER->id;
 $courseid = required_param('id', PARAM_INT);
 
 //Add a row to log the finalize event
-$grades = $DB->get_records('grade_grades', array('id' => $courseid));
 $record = new stdClass();
 $record->userid = $userid;
 $record->courseid = $courseid;

@@ -48,7 +48,7 @@ function xmldb_gradereport_finalize_install() {
         $custom_field->sortorder = 1;
         $custom_field->required = 0;
         $custom_field->locked = 0;
-        $custom_field->visible = 0;
+        $custom_field->visible = 1;
         $custom_field->forceunique = 0;
         $custom_field->defaultdata = '';
         $custom_field->defaultdataformat = 0;

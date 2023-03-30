@@ -25,47 +25,22 @@
 //$url = new moodle_url('/var/www/html/moodle/grade/report/finalize/setWalletConfigs.php');
 //$internal_url_finalize = $url->out();
 require_once('../../../config.php');
-// Get the current Moodle context
-//$userid = $USER->id;
-//
-$courseid = required_param('walletKey', PARAM_ALPHANUMEXT);
-echo $courseid;
-//$custom_field_shortname = 'wallet_address';
-//$userid = $USER->id;
-//$custom_fields = profile_get_custom_fields(true);
-//$custom_field_exists = false;
-//foreach($custom_fields as $custom_field) {
-//    if($custom_field->shortname == $custom_field_shortname) {
-//        $custom_field_exists = true;
-//        break;
-//    }
-//}
-//if(!$custom_field_exists) {
-//    $custom_field = new stdClass();
-//    $custom_field->shortname = $custom_field_shortname;
-//    $custom_field->name = 'Wallet Address';
-//    $custom_field->datatype = 'text';
-//    $custom_field->description = 'Wallet Address';
-//    $custom_field->descriptionformat = 1;
-//    $custom_field->categoryid = 1;
-//    $custom_field->sortorder = 1;
-//    $custom_field->required = 0;
-//    $custom_field->locked = 0;
-//    $custom_field->visible = 1;
-//    $custom_field->forceunique = 0;
-//    $custom_field->signup = 0;
-//    $custom_field->defaultdata = '';
-//    $custom_field->defaultdataformat = 0;
-//    $custom_field->param1 = 30;
-//    $custom_field->param2 = 2048;
-//    $custom_field->param3 = 0;
-//    $custom_field->param4 = '';
-//    $custom_field->param5 = '';
-//    $custom_field->id = $DB->insert_record('user_info_field', $custom_field);
-//}
+require_once($CFG->dirroot . '/user/lib.php');
+global $USER, $DB;
+$walletKey = required_param('walletKey', PARAM_ALPHANUMEXT);
+$USER->profile['wallet_address'] = $walletKey;
+$user_update_result = $DB->update_record('user', $USER);
+$courseid = required_param('id', PARAM_INT);
 
-//if(array_key_exists($custom_field_shortname, $custom_fields)) {
-//    echo "The custom field exists";
-//} else {
-//    echo "The custom field does not exist";
-//}
+//Add a row to log the finalize event
+$record = new stdClass();
+$record->userid = $USER->id;
+$record->courseid = $courseid;
+$record->exportquery = 2;
+$record->time = time();
+$DB->insert_record('gradereport_finalize_history', $record);
+if ($user_update_result) {
+    echo "success";
+} else {
+    echo "error";
+}

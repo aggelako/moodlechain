@@ -30,6 +30,7 @@ $(document).ready(function (){
                             url:'setWalletConfigs.php',
                             type:"POST",
                             data:{
+                                id: courseId,
                                 walletKey: result.value,
                             },
                             success: function (response) {
@@ -39,11 +40,13 @@ $(document).ready(function (){
                                 console.log(response);
                             }
                         });
-                        // add data to custom field
                         getExtraDataPopUp();
                     }
-            });
-        }
+                });
+            }
+            else{
+                getExtraDataPopUp();
+            }
         }
         function getExtraDataPopUp() {
             Swal.fire({
