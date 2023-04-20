@@ -1,0 +1,29 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template finalize/button
+    Example context (json):
+    {
+    }
+}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!--<form action="index.php" method="post">-->
+<div class ="button-container">
+    <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Verify Grades</button>
+    <script src="../finalize/finalizeHandler.js"></script>
+    <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Finalize Grades</button>
+    <script src="../finalize/finalizeHandler.js"></script>
+</div>
+<!--</form>-->

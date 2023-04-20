@@ -26,8 +26,18 @@
     touch-action: manipulation;
     float: right;
 }
-
+#finalize_button {
+    margin-left: 5px;
+}
+#verify_button {
+    margin-left: 5px;
+}
 .finalize_button:hover,
 .finalize_button:focus {
     background-color: #F082AC;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
 }

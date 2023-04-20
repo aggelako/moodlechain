@@ -137,7 +137,12 @@ $walletKey = $USER->profile['wallet_address'];
 if($walletKey == null){
     $walletKey = "";
 }
-echo $OUTPUT->render_from_template('gradereport_finalize/button', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
+if (is_siteadmin($USER->id)) {
+    echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
+}
+else {
+    echo $OUTPUT->render_from_template('gradereport_finalize/teacherButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
+}
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }
