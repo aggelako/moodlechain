@@ -22,10 +22,10 @@
 <!--<form action="index.php" method="post">-->
 <div class ="button-container">
     <button id="authorize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Authorize teacher</button>
-    <script src="../finalize/finalizeHandler.js"></script>
+    <script type="module" src="../finalize/js/handlers/authorizeHandler.js"></script>
     <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Verify Grades</button>
-    <script src="../finalize/finalizeHandler.js"></script>
+    <script type="module" src="../finalize/js/handlers/verifyHandler.js"></script>
     <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Finalize Grades</button>
-    <script src="../finalize/finalizeHandler.js"></script>
+    <script type="module" src="../finalize/js/handlers/finalizeHandler.js"></script>
 </div>
 <!--</form>-->
