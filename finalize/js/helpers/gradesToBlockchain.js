@@ -103,7 +103,6 @@ function confirmationPopUp(result, courseId, jsonData) {
 function handleSuccess(response, courseId, jsonData) {
     const data = formatJSONData(courseId, jsonData, response);
     console.log(data[0].grades);
-    // downloadCSV(csvData);
     displayNotification(M.str.gradereport_finalize.successMessage, "success");
 }
 
@@ -114,7 +113,7 @@ function handleError(xhr, status, error) {
 }
 
 function formatJSONData(courseId, jsonData, response) {
-    console.log(jsonData[0].grades);
+    let newObj = [];
     for (let key in jsonData[0].grades) {
         if (jsonData[0].grades.hasOwnProperty(key)) {
             var oldArray = jsonData[0].grades[key];
@@ -126,8 +125,18 @@ function formatJSONData(courseId, jsonData, response) {
             jsonData[0].grades[key].schoolId = response.value.schoolId;
             jsonData[0].grades[key].semester = response.value.semester;
             jsonData[0].grades[key].academicYear = response.value.academicYear;
+
+            const school = response.value.schoolId;
+            const courseString = response.value.semester + "_" + response.value.academicYear + "_" + courseId.toString();
+            const activityId = key;
+            let values = [];
+            for (const obj of oldArray) {
+                values.push(Object.values(obj));
+            }
+            newObj.push([school, courseString, activityId, values]);
         }
     }
+    console.log(newObj);
     return jsonData;
 }//Function to display notification, to notify the user in case of success of failure
 
