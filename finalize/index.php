@@ -137,12 +137,19 @@ $walletKey = $USER->profile['wallet_address'];
 if($walletKey == null){
     $walletKey = "";
 }
-if (is_siteadmin($USER->id)) {
-    echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
+$teachersBuffer = get_enrolled_users(context_course::instance($courseid),'moodle/grade:viewall');
+$teachers = [];
+foreach($teachersBuffer as $teacher){
+    if(!is_siteadmin($teacher->id))
+    {
+        $teachers[] = [
+            'id' => $teacher->id,
+            'name' => $teacher->firstname . ' ' . $teacher->lastname
+        ];
+    }
 }
-else {
-    echo $OUTPUT->render_from_template('gradereport_finalize/teacherButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'walletKey'=> $USER->profile['wallet_address']));
-}
+echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'teachers'=>json_encode($teachers),'walletKey'=> $USER->profile['wallet_address']));
+
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }
