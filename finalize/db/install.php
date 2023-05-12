@@ -25,7 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 function xmldb_gradereport_finalize_install() {
-    require_once('/var/www/html/moodle/config.php');
     global $DB, $CFG;
     require_once($CFG->dirroot . '/user/profile/lib.php');
     $custom_field_shortname = 'wallet_address';
