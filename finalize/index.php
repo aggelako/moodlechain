@@ -148,7 +148,7 @@ foreach($teachersBuffer as $teacher){
         ];
     }
 }
-echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'teachers'=>json_encode($teachers),'walletKey'=> $USER->profile['wallet_address']));
+echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$report->get_finalize_toJson(),'teachers'=>json_encode($teachers),'userId'=>$USER->id,'walletKey'=> $USER->profile['wallet_address']));
 
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);

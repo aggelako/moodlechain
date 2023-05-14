@@ -20,6 +20,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.3.0/ethers.umd.min.js" integrity="sha512-2T4o6X9D1OQ1ZhA48zBlsDV0rUVZD7ddrHpS/a8k0FDSRCbjV4n1LJUQN3BeIawFyWazgGwcjVn1QU5YkaXuqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!--<form action="index.php" method="post">-->
 <div class ="button-container">
     {{#showAll}}
@@ -28,7 +29,7 @@
     {{/showAll}}
     <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Verify Grades</button>
     <script type="module" src="../finalize/js/handlers/verifyHandler.js"></script>
-    <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Finalize Grades</button>
+    <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-user-Id ="{{userId}}" data-wallet-key="{{walletKey}}" class="finalize_button">Finalize Grades</button>
     <script type="module" src="../finalize/js/handlers/finalizeHandler.js"></script>
 </div>
 <!--</form>-->
