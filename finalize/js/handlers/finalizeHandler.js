@@ -12,7 +12,6 @@ $(document).ready(function () {
         const contract = await accessContract();
         console.log(userId, parseInt(courseId), results);
         const response = await contract.addGrades(userId.toString(), parseInt(courseId), results);
-        console.log(response[0]);
         console.log(response)
     });
 });
