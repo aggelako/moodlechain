@@ -72,7 +72,7 @@ class grade_report_grader_finalize extends grade_report_grader
                         'submitted on'=> $submitedOn,
                         'graded by'=> $gradedBy,
                         'graded on'=> date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
-                        'rawgrade' => $this->grades[$user->id][$item->id]->rawgrade
+                        'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade,
                     );
 
                     $name = $item->get_name();
