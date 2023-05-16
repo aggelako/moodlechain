@@ -194,42 +194,48 @@ function formatJSONData(courseId, jsonData, response) {
     }
     console.log(jsonData);
     return jsonData;
-    // let newObj = [];
-    // for (let key in jsonData[0].grades) {
-    //     if (jsonData[0].grades.hasOwnProperty(key)) {
-    //         var oldArray = jsonData[0].grades[key];
-    //         jsonData[0].grades[key] = {};
-    //         jsonData[0].grades[key].user = jsonData[0].userid;
-    //         jsonData[0].grades[key].time = jsonData[0].time;
-    //         jsonData[0].grades[key].grades = oldArray;
-    //         jsonData[0].grades[key].courseId = courseId;
-    //         jsonData[0].grades[key].schoolId = response.value.schoolId;
-    //         jsonData[0].grades[key].semester = response.value.semester;
-    //         jsonData[0].grades[key].academicYear = response.value.academicYear;
-
-    //         var newArray = []
-    //         for (let obj of oldArray) {
-    //             newArray.push({
-    //                 studentId: obj["userid"],
-    //                 studentName: obj["username"],
-    //                 email: obj["email"],
-    //                 activityName: key,
-    //                 submittedOn: obj["submitted on"],
-    //                 gradedBy: obj["graded by"],
-    //                 gradedOn: obj["graded on"],
-    //                 rawGrade: obj["rawgrade"],
-    //             }
-    //             );
-    //         }
-    //         const school = response.value.schoolId;
-    //         const courseString = response.value.semester + "_" + response.value.academicYear + "_" + courseId.toString();
-    //         const activityId = key;
-    //         newObj.push({ schoolId: school, semesterYearCourse: courseString, activityName: activityId, grades: newArray });
-
-
-    //     }
-    // }
-    // return newObj;
 }//Function to display notification, to notify the user in case of success of failure
 
-export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp };
+async function showIncotisencies(inconsistencies, semester, year, courseId) {
+    let html = "";
+    let icon = "";
+    let title = "";
+
+    if (inconsistencies.length == 0) {
+        title = "No incotisencies found";
+        icon = "success";
+    }
+    else {
+        title = "Incotisencies found for course with id " + courseId + " on " + year + " grades!";
+        html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/table.css\">";
+        html += "<table>\
+        <thead>\
+          <tr>\
+            <th>Student name</th>\
+            <th>Activity name</th>\
+            <th>Grade on blockchain</th>\
+            <th>Current grade</th>\
+          </tr>\
+        </thead>\
+        <tbody>";
+        for (let i = 0; i < inconsistencies.length; i++) {
+            for (let j = 0; j < inconsistencies[i].length; j++) {
+                html += "<tr>\
+                <td class=\"name\">" + inconsistencies[i][j]["studentName"] + "</td>\
+                <td class=\"name\">" + inconsistencies[i][j]["activityName"] + "</td>\
+                <td>" + inconsistencies[i][j]["gradeInBlockchain"] + "</td>\
+                <td>" + inconsistencies[i][j]["currentGrade"] + "</td>\
+                </tr>";
+            }
+        }
+        html += "</tbody>\
+        </table>";
+        icon = "error";
+    }
+    Swal.fire({
+        title: title,
+        html: html,
+        icon: icon,
+    });
+}
+export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp, showIncotisencies };
