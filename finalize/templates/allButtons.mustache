@@ -24,12 +24,12 @@
 <!--<form action="index.php" method="post">-->
 <div class ="button-container">
     {{#showAll}}
-        <button id="authorize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-teachers="{{teachers}}" data-wallet-key="{{walletKey}}" class="finalize_button">Authorize teacher</button>
+        <button id="authorize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-teachers="{{teachers}}" class="finalize_button">Authorize teacher</button>
         <script type="module" src="../finalize/js/handlers/authorizeHandler.js"></script>
     {{/showAll}}
-    <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-wallet-key="{{walletKey}}" class="finalize_button">Verify Grades</button>
+    <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" class="finalize_button">Verify Grades</button>
     <script type="module" src="../finalize/js/handlers/verifyHandler.js"></script>
-    <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-user-Id ="{{userId}}" data-wallet-key="{{walletKey}}" class="finalize_button">Finalize Grades</button>
+    <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-user-Id ="{{userId}}" class="finalize_button">Finalize Grades</button>
     <script type="module" src="../finalize/js/handlers/finalizeHandler.js"></script>
 </div>
 <!--</form>-->

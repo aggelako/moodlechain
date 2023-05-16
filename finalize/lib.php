@@ -42,7 +42,7 @@ class grade_report_grader_finalize extends grade_report_grader
      * so we take it from there
      */
     public function get_raw_grades(){
-        global $DB;
+        global $DB, $USER;
         $this->finalize_grading_object = array();
         foreach ($this->gtree->items as $item) {
             $gradeitem = array();
@@ -64,61 +64,28 @@ class grade_report_grader_finalize extends grade_report_grader
                         $history = $DB->get_record_sql($sql, array('userid'=>$user->id,'userid2'=>$user->id));
                         $submitedOn = date("Y-m-d H:i:s", $history->timemodified);
                     }
-                    $gradeitem[] = array(
-                        'userid' => $user->id,
-                        'username' => $user->firstname . ' ' . $user->lastname,
-                        'email'=> $user->email,
-                        'activity_name' => $item->get_name(),
-                        'submitted on'=> $submitedOn,
-                        'graded by'=> $gradedBy,
-                        'graded on'=> date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
-                        'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade,
-                    );
-
+                    $gradedOn = date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified);
                     $name = $item->get_name();
                 }
                 else if(!empty($this->grades[$user->id][$item->id]->finalgrade)) {
-                    $gradeitem[] = array(
-                        'userid' => $user->id,
-                        'username' => $user->firstname . ' ' . $user->lastname,
-                        'email'=> $user->email,
-                        'activity_name' => 'Final Grade',
-                        'submitted on' => date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
-                        'graded on' => date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified),
-                        'graded by'=> 'System',
-                        'rawgrade' => $this->grades[$user->id][$item->id]->finalgrade,
-                    );
                     $name = 'Final Grade';
+                    $submitedOn = date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified);
+                    $gradedOn = $submitedOn;
+                    $gradedBy = 'System';
                 }
+                $gradeitem[] = array(
+                    'studentId' => $user->id,
+                    'studentName' => $user->firstname . ' ' . $user->lastname,
+                    'email'=> $user->email,
+                    'activityName' => $name,
+                    'submittedOn' => $submitedOn,
+                    'gradedOn' => $gradedOn,
+                    'gradedBy'=> $gradedBy,
+                    'rawGrade' => $this->grades[$user->id][$item->id]->finalgrade,
+                );
             }
-            $this->finalize_grading_object[$name] = $gradeitem;
+            array_push($this->finalize_grading_object, array('activityName'=>$name,'grades'=>$gradeitem));
         }
+        return json_encode($this->finalize_grading_object);
     }
-
-    /**
-     * @return false|string
-     * Calls the above function to fill the finalize grading object and
-     * then turns it in the wanted json format
-     */
-    public function get_finalize_toJson(){
-        $this->get_raw_grades();
-        global $USER;
-        if(!empty($this->finalize_grading_object)){
-            $resultArray []= array(
-                "userid"=>$USER->id,
-                "courseid"=>$this->courseid,
-                "time"=>date("Y-m-d H:i:s",time()),
-                "grades"=>$this->finalize_grading_object
-            );
-            return json_encode($resultArray);
-        }
-        else{
-            return json_encode([]);
-        }
-
-    }
-
-
-
-
 }
