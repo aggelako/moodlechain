@@ -40,6 +40,22 @@ $(document).ready(function () {
         }
         console.log(incostisencies);
         showIncotisencies(incostisencies, semester, year, course);
+        $.ajax({
+            type: "POST",
+            url: "handleFinalize.php",
+            data: {
+                action: "verifyGrades",
+                courseId: courseId,
+                schoolId: results[0].schoolId,
+                semesterYearCourse: results[0].semesterYearCourse,
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: ((jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR, textStatus, errorThrown);
+            })
+        });
 
     });
 });

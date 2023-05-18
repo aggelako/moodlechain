@@ -1,4 +1,5 @@
 import accessContract from "../helpers/accessContract.js";
+import displayNotification from "../helpers/displayNotifications.js";
 import { getExtraDataPopUp, handleErrors } from "../helpers/popUpWindows.js"
 
 //Event handler for finalize grades button click
@@ -9,13 +10,32 @@ $(document).ready(function () {
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
         console.log(results);
-        const contract = await accessContract();
-        console.log(userId, parseInt(courseId), results);
+        // const contract = await accessContract();
+        // console.log(userId, parseInt(courseId), results);
         try {
-            const response = await contract.addGrades(userId.toString(), parseInt(courseId), results);
-            console.log(response)
+            // const response = await contract.addGrades(userId.toString(), parseInt(courseId), results);
+            // console.log(response)
+            $.ajax({
+                type: "POST",
+                url: "handleFinalize.php",
+                data: {
+                    action: "addGrades",
+                    courseId: courseId,
+                    schoolId: results[0].schoolId,
+                    semesterYearCourse: results[0].semesterYearCourse,
+                },
+                success: function (response) {
+                    console.log(response);
+                    displayNotification("Grades added successfully", "success")
+                },
+                error: ((jqXHR, textStatus, errorThrown) => {
+                    console.log(jqXHR, textStatus, errorThrown);
+                    displayNotification('Something went wrong', "error");
+                })
+            });
         }
         catch (err) {
+            console.log(err)
             handleErrors(err);
             return;
         }

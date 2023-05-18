@@ -91,20 +91,7 @@ function confirmationPopUp(result, courseId, jsonData) {
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
         }).then((confirmResult) => {
-            if (confirmResult.value) {
-                $.ajax({
-                    type: "POST",
-                    url: "handleFinalize.php",
-                    data: {
-                        id: courseId,
-                        school_id: result.value.schoolId,
-                        semester: result.value.semester,
-                        academic_year: result.value.academicYear
-                    },
-                    success: resolve(formatJSONData(courseId, jsonData, result)),
-                    error: handleError
-                });
-            }
+            resolve(formatJSONData(courseId, jsonData, result))
         });
 
     });
@@ -170,18 +157,13 @@ function showTeacherPopUp(teachers) {
             cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.isConfirmed) {
-                resolve(result.value);
+                resolve(result.value, teacherOptions[result.value]);
             }
             else {
                 resolve(false);
             }
         });
     });
-}
-//function that handles the error, if there is one after the button is pressed
-function handleError(xhr, status, error) {
-    console.error("An error occurred: " + error);
-    displayNotification(M.str.gradereport_finalize.errorMessage, "error");
 }
 
 function formatJSONData(courseId, jsonData, response) {

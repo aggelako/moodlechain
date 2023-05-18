@@ -7,9 +7,12 @@
         <TABLE NAME="gradereport_finalize_history" COMMENT="each record is a message">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" />
-                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" />
-                <FIELD NAME="exportquery" TYPE="int" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="userid" TYPE="text" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="courseid" TYPE="text" LENGTH="10" NOTNULL="true" />
+                <FIELD NAME="teacherid" TYPE="text" LENGTH="10" NOTNULL="false" />
+                <FIELD NAME="schoolid" TYPE="text" LENGTH="10" NOTNULL="false" />                
+                <FIELD NAME="semesteryearcourse" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="actiontype" TYPE="int" LENGTH="10" NOTNULL="true" COMMENT="0 for addGrades, 1 for verify, 2 for authorizeteacher"/>
                 <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="true"/>
             </FIELDS>
             <KEYS>
