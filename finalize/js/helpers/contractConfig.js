@@ -1,4 +1,4 @@
-const address = "0x4F5e15089c62e4AD175fFBF78D85516620090567";
+const address = "0x..";
 const abi = [
 ];
 const network = {

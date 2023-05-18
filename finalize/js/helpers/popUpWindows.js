@@ -100,6 +100,7 @@ function selectActivitiesPopUp(activities) {
     return new Promise((resolve) => {
         // Create an HTML string with checkboxes for each object
         var html = "";
+        html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/styles.css\">";
         for (var i = 0; i < activities.length; i++) {
             html += "<input type='checkbox' id='object-" + i + "' value='" + activities[i].name + "'>";
             html += "<label for='object-" + i + "'>" + activities[i].name + "</label><br>";
