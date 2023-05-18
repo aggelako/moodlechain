@@ -238,4 +238,18 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
         icon: icon,
     });
 }
-export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp, showIncotisencies };
+function handleErrors(error) {
+    if (error.info.error.code == -32603) {
+        alert(error.info.error.data.message);
+    }
+    else if (error.info.error.code == 4001) {
+        alert("You have rejected the transaction");
+    }
+    else {
+        alert(error.info.error.message);
+        console.log(error);
+    }
+    return;
+}
+
+export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp, showIncotisencies, handleErrors };

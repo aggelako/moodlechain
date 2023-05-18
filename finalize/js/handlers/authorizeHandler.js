@@ -1,6 +1,6 @@
 import displayNotification from "../helpers/displayNotifications.js"
 import accessContract from "../helpers/accessContract.js";
-import { showTeacherPopUp } from "../helpers/popUpWindows.js"
+import { showTeacherPopUp, handleErrors } from "../helpers/popUpWindows.js"
 $(document).ready(function () {
     $("#authorize_button").click(async function () {
         const courseId = $(this).data("courseId");
@@ -10,8 +10,14 @@ $(document).ready(function () {
         console.log("teacher: ", teacher);
         const contract = await accessContract();
         console.log(teacher, parseInt(courseId));
-        const response = await contract.addPermissions(teacher.toString(), parseInt(courseId));
-        console.log(response);
+        try {
+            const response = await contract.addPermissions(teacher.toString(), parseInt(courseId));
+            console.log(response);
+        }
+        catch (err) {
+            handleErrors(err);
+            return;
+        }
 
     });
 });

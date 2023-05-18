@@ -1,5 +1,5 @@
 import accessContract from "../helpers/accessContract.js";
-import { getExtraDataPopUp, selectActivitiesPopUp, showIncotisencies } from "../helpers/popUpWindows.js"
+import { getExtraDataPopUp, selectActivitiesPopUp, showIncotisencies, handleErrors } from "../helpers/popUpWindows.js"
 $(document).ready(function () {
     $("#verify_button").click(async function () {
         const courseId = $(this).data("courseId");
@@ -21,15 +21,21 @@ $(document).ready(function () {
         let incostisencies = [];
         for (let i = 0; i < gradingActivities.length; i++) {
             console.log(typeof (results[0].schoolId), typeof (results[0].semesterYearCourse), typeof (gradingActivities[i]));
-            const response = await contract.getGrades(results[0].schoolId.toString(), results[0].semesterYearCourse, gradingActivities[i].toString());
-            console.log(response);
+            try {
+                const response = await contract.getGrades(results[0].schoolId.toString(), results[0].semesterYearCourse, gradingActivities[i].toString());
+                console.log(response);
 
-            if (response.length == 0) {
-                alert("No grades found");
-                return;
+                if (response.length == 0) {
+                    alert("No grades found");
+                    return;
+                }
+                else {
+                    incostisencies.push(compareGrades(response, objectToCompare[gradingActivities[i]]));
+                }
             }
-            else {
-                incostisencies.push(compareGrades(response, objectToCompare[gradingActivities[i]]));
+            catch (err) {
+                handleErrors(err);
+                return;
             }
         }
         console.log(incostisencies);
