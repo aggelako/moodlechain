@@ -10,11 +10,11 @@ $(document).ready(function () {
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
         console.log(results);
-        // const contract = await accessContract();
-        // console.log(userId, parseInt(courseId), results);
+        const contract = await accessContract();
+        console.log(userId, parseInt(courseId), results);
         try {
-            // const response = await contract.addGrades(userId.toString(), parseInt(courseId), results);
-            // console.log(response)
+            const response = await contract.addGrades(userId.toString(), parseInt(courseId), results, { gasLimit: 300000000 });
+            console.log(response)
             $.ajax({
                 type: "POST",
                 url: "handleFinalize.php",

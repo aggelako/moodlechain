@@ -31,16 +31,15 @@ require_once($CFG->libdir.'/tablelib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_report_grader_finalize extends grade_report_grader
-{
+{   private $numberOfUsers;
+    public function __construct($courseid, $gpr, $context, $page, $sortitemid, $totalUsers) {
+        parent::__construct($courseid, $gpr, $context, $page, $sortitemid);
+        $this->numberOfUsers = $totalUsers;
+    }    
     private $finalize_grading_object;
-
-    /**
-     * @return void
-     * Feeding values to finalize_grading_object, which is an array of [gradeitemname, userid, rawgrade]
-     * To include the final grade for each user as well, we noticed that in the $this->grades object
-     * the final grade for each user, has null value in the rawgrade and has its value in the finalgrade field
-     * so we take it from there
-     */
+    public function get_students_per_page(): int {
+        return (int) $this->numberOfUsers ? $this->numberOfUsers : 0;
+    }
     public function get_raw_grades(){
         global $DB, $USER;
         $this->finalize_grading_object = array();
@@ -48,7 +47,7 @@ class grade_report_grader_finalize extends grade_report_grader
             $gradeitem = array();
             $gradingUsers = get_enrolled_users($this->context, 'mod/assign:grade');
             foreach ($this->users as $user) {
-                if (!empty($this->grades[$user->id][$item->id]->rawgrade)) {
+                if (!empty($item->itemname)) {
                     $lastModifiedById = $this->grades[$user->id][$item->id]->usermodified;
                     if ($lastModifiedById == $user->id){
                         $gradedBy = 'System';
@@ -57,17 +56,17 @@ class grade_report_grader_finalize extends grade_report_grader
                     else{
                         $gradedBy = $gradingUsers[$lastModifiedById]->firstname;
                         $sql = "SELECT * FROM {grade_grades_history}
-                               WHERE userid = :userid
-                               AND loggeduser = :userid2
-                               ORDER BY timemodified DESC
-                               LIMIT 1";
+                            WHERE userid = :userid
+                            AND loggeduser = :userid2
+                            ORDER BY timemodified DESC
+                            LIMIT 1";
                         $history = $DB->get_record_sql($sql, array('userid'=>$user->id,'userid2'=>$user->id));
                         $submitedOn = date("Y-m-d H:i:s", $history->timemodified);
                     }
                     $gradedOn = date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified);
                     $name = $item->get_name();
                 }
-                else if(!empty($this->grades[$user->id][$item->id]->finalgrade)) {
+                else {
                     $name = 'Final Grade';
                     $submitedOn = date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified);
                     $gradedOn = $submitedOn;
@@ -86,6 +85,7 @@ class grade_report_grader_finalize extends grade_report_grader
             }
             array_push($this->finalize_grading_object, array('activityName'=>$name,'grades'=>$gradeitem));
         }
+        
         return json_encode($this->finalize_grading_object);
     }
 }

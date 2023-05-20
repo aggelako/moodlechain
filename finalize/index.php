@@ -91,7 +91,9 @@ print_grade_page_head(
     . ' ' . $USER->lastname,
     false
 );
-$report = new grade_report_grader_finalize($courseid, $gpr, $context, $page, $sortitemid);
+$report = new grade_report_grader($courseid, $gpr, $context, $page, $sortitemid);
+$report->pbarurl = new moodle_url('/grade/report/finalize/index.php', array('id' => $courseid));
+
 // make sure separate group does not prevent view
 if ($report->currentgroup == -2) {
     echo $OUTPUT->heading(get_string("notingroup"));
@@ -109,7 +111,7 @@ $report->load_final_grades();
 echo $report->group_selector;
 $numusers = $report->get_numusers(true, true);
 // User search
-$url = new moodle_url('/grade/report/grader/index.php', array('id' => $course->id));
+$url = new moodle_url('/grade/report/finalize/index.php', array('id' => $course->id));
 $firstinitial = $SESSION->gradereport["filterfirstname-{$context->id}"] ?? '';
 $lastinitial  = $SESSION->gradereport["filtersurname-{$context->id}"] ?? '';
 $totalusers = $report->get_numusers(true, false);
@@ -148,8 +150,12 @@ foreach($teachersBuffer as $teacher){
         ];
     }
 }
-echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$report->get_raw_grades(),'teachers'=>json_encode($teachers),'userId'=>$USER->id));
+$reportAll = new grade_report_grader_finalize($courseid, $gpr, $context, $page, $sortitemid, $numusers);
+$reportAll->load_users();
+$reportAll->load_final_grades();
+$allGrades = $reportAll->get_raw_grades();
 
+echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$allGrades,'teachers'=>json_encode($teachers),'userId'=>$USER->id));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }
