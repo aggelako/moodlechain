@@ -129,7 +129,6 @@ function selectActivitiesPopUp(activities) {
                 // Do something with the selected objects
                 if (result.value && result.value.length > 0) {
                     gradingActivities = result.value.map(o => o.name);
-                    console.log(gradingActivities);
                 } else {
                     gradingActivities = [];
                 }
@@ -168,12 +167,10 @@ function showTeacherPopUp(teachers) {
 function formatJSONData(courseId, jsonData, response) {
     const school = response.value.schoolId;
     const courseString = response.value.semester + "_" + response.value.academicYear + "_" + courseId.toString();
-    console.log(jsonData);
     for (let i = 0; i < jsonData.length; i++) {
         jsonData[i].schoolId = school;
         jsonData[i].semesterYearCourse = courseString;
     }
-    console.log(jsonData);
     return jsonData;
 }//Function to display notification, to notify the user in case of success of failure
 
@@ -181,7 +178,6 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     let html = "";
     let icon = "";
     let title = "";
-    console.log(inconsistencies[0])
 
     if (inconsistencies[0].length == 0) {
         title = "No incotisencies found";

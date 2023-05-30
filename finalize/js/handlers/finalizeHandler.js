@@ -8,13 +8,13 @@ $(document).ready(function () {
         const jsonData = $(this).data("grades");
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
-        console.log(results);
         const contract = await accessContract();
-        console.log(userId, parseInt(courseId), results);
+        console.log("Finalizing grades for course with id " + parseInt(courseId));
         try {
             showLoading();
-            const response = await contract.addGrades(userId.toString(), parseInt(courseId), results, { gasLimit: 300000000 });
-            console.log(response)
+            await contract.addGrades(userId.toString(), parseInt(courseId), results, { gasLimit: 300000000 });
+            console.log("Transaction completed, logging event on database...")
+            hideLoading();
             $.ajax({
                 type: "POST",
                 url: "handleFinalize.php",
@@ -25,18 +25,17 @@ $(document).ready(function () {
                     semesterYearCourse: results[0].semesterYearCourse,
                 },
                 success: function (response) {
-                    hideLoading();
-                    console.log(response);
-                    alert("Grades added successfully", "success")
+                    console.log("Event logged successfully");
+                    alert("Grades added successfully")
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
-                    hideLoading();
                     console.log(jqXHR, textStatus, errorThrown);
-                    alert('Something went wrong', "error");
+                    alert('Something went wrong');
                 })
             });
         }
         catch (err) {
+            hideLoading();
             console.log(err)
             handleErrors(err);
             return;

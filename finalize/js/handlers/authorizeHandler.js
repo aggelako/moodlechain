@@ -4,25 +4,22 @@ $(document).ready(function () {
     $("#authorize_button").click(async function () {
         const courseId = $(this).data("courseId");
         const teachers = $(this).data("teachers");
-        console.log("teachers: ", teachers);
-        const [teacher, teacherName] = await showTeacherPopUp(teachers);
-        console.log("teacher: ", teacher);
+        const teacherId = await showTeacherPopUp(teachers);
+        console.log(teachers[teacherId] + " selected for authorization, adding permissions...");
         const contract = await accessContract();
-        console.log(teacher, parseInt(courseId));
         try {
-            const response = await contract.addPermissions(teacher.toString(), parseInt(courseId));
-            console.log(response);
+            const response = await contract.addPermissions(teacherId.toString(), parseInt(courseId));
+            console.log("Permissions added, logging event on database...")
             $.ajax({
                 type: "POST",
                 url: "handleFinalize.php",
                 data: {
                     action: "authorizeTeacher",
-                    teacherId: teacher,
+                    teacherId: teacherId,
                     courseId: courseId,
                 },
                 success: function (response) {
-                    console.log(response);
-                    alert("Grades added successfully", "success")
+                    console.log("Event logged successfully");
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
