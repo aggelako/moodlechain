@@ -61,7 +61,7 @@ class grade_report_grader_finalize extends grade_report_grader
                             ORDER BY timemodified DESC
                             LIMIT 1";
                         $history = $DB->get_record_sql($sql, array('userid'=>$user->id,'userid2'=>$user->id));
-                        $submitedOn = date("Y-m-d H:i:s", $history->timemodified);
+                        $submitedOn = $history ? date("Y-m-d H:i:s", $history->timemodified): "No submission info";
                     }
                     $gradedOn = date("Y-m-d H:i:s",$this->grades[$user->id][$item->id]->timemodified);
                     $name = $item->get_name();
