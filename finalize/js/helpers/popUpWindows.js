@@ -1,5 +1,3 @@
-import displayNotification from "./displayNotifications.js";
-
 function getExtraDataPopUp(courseId, jsonData) {
     return new Promise((resolve) => {
         Swal.fire({
@@ -183,13 +181,14 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     let html = "";
     let icon = "";
     let title = "";
+    console.log(inconsistencies[0])
 
-    if (inconsistencies.length == 0) {
+    if (inconsistencies[0].length == 0) {
         title = "No incotisencies found";
         icon = "success";
     }
     else {
-        title = "Incotisencies found for course with id " + courseId + " on " + year + " grades!";
+        title = "Incotisencies found!";
         html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/table.css\">";
         html += "<table>\
         <thead>\
@@ -222,17 +221,37 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     });
 }
 function handleErrors(error) {
-    if (error.info.error.code == -32603) {
-        alert(error.info.error.data.message);
+    try {
+        if (error.info.error.code == -32603) {
+            alert(error.info.error.data.message);
+        }
+        else if (error.info.error.code == 4001) {
+            alert("You have rejected the transaction");
+        }
+        else {
+            alert(error.info.error.message);
+            console.log(error);
+        }
     }
-    else if (error.info.error.code == 4001) {
-        alert("You have rejected the transaction");
-    }
-    else {
-        alert(error.info.error.message);
+    catch {
+        alert(error);
         console.log(error);
     }
     return;
 }
+function showLoading() {
+    Swal.fire({
+        title: 'Loading...',
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+            Swal.showLoading()
+        }
+    });
+}
 
-export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp, showIncotisencies, handleErrors };
+function hideLoading() {
+    Swal.close();
+}
+
+
+export { getExtraDataPopUp, selectActivitiesPopUp, showTeacherPopUp, showIncotisencies, handleErrors, showLoading, hideLoading };

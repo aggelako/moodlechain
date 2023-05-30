@@ -1,6 +1,5 @@
 import accessContract from "../helpers/accessContract.js";
-import displayNotification from "../helpers/displayNotifications.js";
-import { getExtraDataPopUp, handleErrors } from "../helpers/popUpWindows.js"
+import { getExtraDataPopUp, handleErrors, showLoading, hideLoading } from "../helpers/popUpWindows.js"
 
 //Event handler for finalize grades button click
 $(document).ready(function () {
@@ -13,6 +12,7 @@ $(document).ready(function () {
         const contract = await accessContract();
         console.log(userId, parseInt(courseId), results);
         try {
+            showLoading();
             const response = await contract.addGrades(userId.toString(), parseInt(courseId), results, { gasLimit: 300000000 });
             console.log(response)
             $.ajax({
@@ -25,12 +25,14 @@ $(document).ready(function () {
                     semesterYearCourse: results[0].semesterYearCourse,
                 },
                 success: function (response) {
+                    hideLoading();
                     console.log(response);
-                    displayNotification("Grades added successfully", "success")
+                    alert("Grades added successfully", "success")
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
+                    hideLoading();
                     console.log(jqXHR, textStatus, errorThrown);
-                    displayNotification('Something went wrong', "error");
+                    alert('Something went wrong', "error");
                 })
             });
         }

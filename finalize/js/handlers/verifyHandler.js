@@ -1,5 +1,5 @@
 import accessContract from "../helpers/accessContract.js";
-import { getExtraDataPopUp, selectActivitiesPopUp, showIncotisencies, handleErrors } from "../helpers/popUpWindows.js"
+import { getExtraDataPopUp, selectActivitiesPopUp, showIncotisencies, handleErrors, showLoading, hideLoading } from "../helpers/popUpWindows.js"
 $(document).ready(function () {
     $("#verify_button").click(async function () {
         const courseId = $(this).data("courseId");
@@ -19,6 +19,7 @@ $(document).ready(function () {
         let objectToCompare = transformGrades(results);
         const contract = await accessContract();
         let incostisencies = [];
+        showLoading();
         for (let i = 0; i < gradingActivities.length; i++) {
             console.log(typeof (results[0].schoolId), typeof (results[0].semesterYearCourse), typeof (gradingActivities[i]));
             try {
@@ -39,6 +40,7 @@ $(document).ready(function () {
             }
         }
         console.log(incostisencies);
+        hideLoading();
         showIncotisencies(incostisencies, semester, year, course);
         $.ajax({
             type: "POST",

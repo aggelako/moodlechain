@@ -1,4 +1,3 @@
-import displayNotification from "../helpers/displayNotifications.js"
 import accessContract from "../helpers/accessContract.js";
 import { showTeacherPopUp, handleErrors } from "../helpers/popUpWindows.js"
 $(document).ready(function () {
@@ -23,11 +22,11 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     console.log(response);
-                    displayNotification("Grades added successfully", "success")
+                    alert("Grades added successfully", "success")
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
-                    displayNotification('Something went wrong', "error");
+                    alert('Something went wrong', "error");
                 })
             });
         }
