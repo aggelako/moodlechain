@@ -4,7 +4,6 @@ $(document).ready(function () {
     $("#verify_button").click(async function () {
         const courseId = $(this).data("courseId");
         const jsonData = $(this).data("grades");
-        console.log(jsonData);
         const activities = [];
         for (let i = 0; i < jsonData.length; i++) {
             activities.push({
@@ -12,19 +11,16 @@ $(document).ready(function () {
             })
         }
         const gradingActivities = await selectActivitiesPopUp(activities);
-        console.log(gradingActivities);
+        console.log("Activities selected, retrieving grades from blockchain...");
         const results = await getExtraDataPopUp(courseId, jsonData);
-        console.log(results);
         const [semester, year, course] = results[0].semesterYearCourse.split("_");
         let objectToCompare = transformGrades(results);
         const contract = await accessContract();
         let incostisencies = [];
         showLoading();
         for (let i = 0; i < gradingActivities.length; i++) {
-            console.log(typeof (results[0].schoolId), typeof (results[0].semesterYearCourse), typeof (gradingActivities[i]));
             try {
                 const response = await contract.getGrades(results[0].schoolId.toString(), results[0].semesterYearCourse, gradingActivities[i].toString());
-                console.log(response);
 
                 if (response.length == 0) {
                     alert("No grades found");
@@ -39,9 +35,10 @@ $(document).ready(function () {
                 return;
             }
         }
-        console.log(incostisencies);
+        console.log("Grades retrieved from blockchain, comparing...")
         hideLoading();
         showIncotisencies(incostisencies, semester, year, course);
+        console.log("Grades verified, logging event on database...")
         $.ajax({
             type: "POST",
             url: "handleFinalize.php",
@@ -52,7 +49,7 @@ $(document).ready(function () {
                 semesterYearCourse: results[0].semesterYearCourse,
             },
             success: function (response) {
-                console.log(response);
+                console.log("Event logged successfully");
             },
             error: ((jqXHR, textStatus, errorThrown) => {
                 console.log(jqXHR, textStatus, errorThrown);
@@ -70,20 +67,17 @@ function transformGrades(finalizedObject) {
             objectToCompare[finalizedObject[i].activityName][finalizedObject[i].grades[j].studentId] = finalizedObject[i].grades[j].rawGrade;
         }
     }
-    console.log(objectToCompare);
     return objectToCompare;
 }
 
 
 function compareGrades(grades, finalizedObject) {
-    console.log(grades, finalizedObject)
     const incostisencies = [];
     for (let i = 0; i < grades.length; i++) {
         let studentId = grades[i][0];
         let studentName = grades[i][1];
         let activityName = grades[i][3];
         let grade = grades[i][7];
-        console.log(studentId, grade, finalizedObject[studentId]);
         if (finalizedObject[studentId] != grade) {
             incostisencies.push({ 'studentName': studentName, 'activityName': activityName, 'gradeInBlockchain': grade, 'currentGrade': finalizedObject[studentId] });
         }
