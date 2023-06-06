@@ -19,7 +19,6 @@
  *
  * @package   gradereport_grader_finalize
  * @copyright 2023 Athanasios Angelakopoulos
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
@@ -28,7 +27,6 @@ require_once($CFG->libdir.'/tablelib.php');
  * Class providing an API for the finalize grades plugin to export the grades in a certain format.
  * @uses grade_report_grader_finalize
  * @copyright 2023 Athanasios Angelakopoulos
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_report_grader_finalize extends grade_report_grader
 {   private $numberOfUsers;

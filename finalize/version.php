@@ -15,12 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for the quizanalytics gradebook report
+ * Renderer for the gradebook overview report
  *
  * @package   gradereport_finalize
- * @author Moumita Adak <moumita.a@dualcube.com>
- * @copyright  Dualcube (https://dualcube.com)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright Athanasios Angelakopoulos
  */
 
 defined('MOODLE_INTERNAL') || die();

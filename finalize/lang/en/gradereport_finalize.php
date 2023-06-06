@@ -15,12 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'gradereport_finalize', language 'en'
  *
- * @package   gradereport_quizanalytics
- * @author DualCube <admin@dualcube.com>
- * @copyright Dualcube (https://dualcube.com)
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   gradereport_finalize
+ * @author  Athanasios Angelakopoulos
  */
 // Index.
 $string['pluginname'] = 'Moodlechain';

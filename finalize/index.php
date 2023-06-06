@@ -18,19 +18,9 @@
  * Renderer for the gradebook overview report
  *
  * @package   gradereport_finalize
- * @copyright 2010 Sam Hemelryk
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright Athanasios Angelakopoulos
  */
 
-/**
- * Custom renderer for the user grade report
- *
- * To get an instance of this use the following code:
- * $renderer = $PAGE->get_renderer('gradereport_overview');
- *
- * @copyright 2010 Sam Hemelryk
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 require_once('../../../config.php');
 require_once($CFG->dirroot . '/grade/lib.php');
 require_once($CFG->dirroot . '/grade/report/grader/lib.php');

@@ -15,12 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines capabilities for the gradebook quizanalytics report
+ * Defines capabilities for the gradebook moodlechain report
  *
  * @package   gradereport_finalize
- * @author Tom <admin@dualcube.com>
- * @copyright  Tom (https://dualcube.com)
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author  Athanasios Angelakopoulos
  */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
