@@ -45,8 +45,12 @@ $sortitemid    = optional_param('sortitemid', 0, PARAM_ALPHANUMEXT);
 $PAGE->set_url(new moodle_url($CFG->wwwroot . '/grade/report/finalize/index.php', array('id' => $courseid)));
 $PAGE->requires->css('/grade/report/finalize/css/finalize_button.css', true);
 $PAGE->set_pagelayout('report');
-//needs update everytime we add a new string
-$PAGE->requires->strings_for_js(array('buttonText','successMessage','errorMessage','popupMessage', 'formNotCompleted','completeForm','SchoolId','Semester','AcademicYear','SubmitButton','CancelButton'), 'gradereport_finalize');
+
+// Load the language strings for javascript. We need to update the list every time we add a new string
+$strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation');
+foreach ($strings as $string) {
+    $PAGE->requires->string_for_js($string, 'gradereport_finalize');
+}
 // Basic access checks.
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     throw new \moodle_exception('invalidcourseid');
@@ -78,7 +82,7 @@ if (!isset($USER->grade_last_report)) {
     $USER->grade_last_report = array();
 }
 $USER->grade_last_report[$course->id] = 'grader';
-$reportname = get_string('pluginname', 'gradereport_finalize');
+$reportname = 'Moodlechain';
 // Do this check just before printing the grade header (and only do it once).
 grade_regrade_final_grades_if_required($course);
 
@@ -87,7 +91,7 @@ print_grade_page_head(
     $courseid,
     'report',
     'finalize',
-    get_string('pluginname', 'gradereport_finalize') . ' - ' . $USER->firstname
+    'Moodlechain' . ' - ' . $USER->firstname
     . ' ' . $USER->lastname,
     false
 );
@@ -155,7 +159,7 @@ $reportAll->load_users();
 $reportAll->load_final_grades();
 $allGrades = $reportAll->get_raw_grades();
 
-echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('buttonText'=>get_string('buttonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$allGrades,'teachers'=>json_encode($teachers),'userId'=>$USER->id));
+echo $OUTPUT->render_from_template('gradereport_finalize/allButtons', array('finalizeButtonText'=>get_string('finalizeButtonText','gradereport_finalize'),'verifyButtonText'=>get_string('verifyButtonText','gradereport_finalize'), 'authorizeButtonText'=>get_string('authorizeButtonText','gradereport_finalize'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$allGrades,'teachers'=>json_encode($teachers),'userId'=>$USER->id));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
 }

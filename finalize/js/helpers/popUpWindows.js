@@ -63,6 +63,9 @@ function getExtraDataPopUp(courseId, jsonData) {
             if (result.isConfirmed && result.value) {
                 resolve(confirmationPopUp(result, courseId, jsonData));
             }
+            else {
+                resolve(false);
+            }
         }).catch((err) => {
             onFailure(err);
         });
@@ -89,7 +92,12 @@ function confirmationPopUp(result, courseId, jsonData) {
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
         }).then((confirmResult) => {
-            resolve(formatJSONData(courseId, jsonData, result))
+            if (confirmResult.isConfirmed) {
+                resolve(formatJSONData(courseId, jsonData, result));
+            }
+            else {
+                resolve(false)
+            }
         });
 
     });
@@ -103,12 +111,11 @@ function selectActivitiesPopUp(activities) {
             html += "<input type='checkbox' id='object-" + i + "' value='" + activities[i].name + "'>";
             html += "<label for='object-" + i + "'>" + activities[i].name + "</label><br>";
         }
-        let gradingActivities = [];
         Swal.fire({
-            title: "Select one or more objects",
+            title: M.str.gradereport_finalize.chooseActivityForm,
             html: html,
             showCancelButton: true,
-            confirmButtonText: "Submit",
+            confirmButtonText: M.str.gradereport_finalize.SubmitButton,
             preConfirm: () => {
                 // Get the selected objects from the checkboxes
                 var selectedObjects = [];
@@ -119,7 +126,7 @@ function selectActivitiesPopUp(activities) {
                     }
                 }
                 if (selectedObjects.length == 0) {
-                    Swal.showValidationMessage("You must select at least one object");
+                    Swal.showValidationMessage(M.str.gradereport_finalize.chooseActivityValidation);
                 }
                 return selectedObjects;
             }
@@ -128,12 +135,10 @@ function selectActivitiesPopUp(activities) {
             .then((result) => {
                 // Do something with the selected objects
                 if (result.value && result.value.length > 0) {
-                    gradingActivities = result.value.map(o => o.name);
+                    resolve(result.value.map(o => o.name));
                 } else {
-                    gradingActivities = [];
+                    resolve(false);
                 }
-                resolve(gradingActivities);
-
             });
     });
 }
@@ -147,12 +152,12 @@ function showTeacherPopUp(teachers) {
 
         // Display the SweetAlert dialog with a dropdown menu of teacher names
         Swal.fire({
-            title: 'Select a teacher',
+            title: M.str.gradereport_finalize.chooseTeacher,
             input: 'select',
             inputOptions: teacherOptions,
             showCancelButton: true,
-            confirmButtonText: 'Submit',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: M.str.gradereport_finalize.SubmitButton,
+            cancelButtonText: M.str.gradereport_finalize.CancelButton,
         }).then((result) => {
             if (result.isConfirmed) {
                 resolve(result.value, teacherOptions[result.value]);
@@ -180,11 +185,11 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     let title = "";
 
     if (inconsistencies[0].length == 0) {
-        title = "No incotisencies found";
+        title = M.str.gradereport_finalize.verifySuccess;
         icon = "success";
     }
     else {
-        title = "Incotisencies found!";
+        title = M.str.gradereport_finalize.verifyFailure;
         html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/table.css\">";
         html += "<table>\
         <thead>\
@@ -222,7 +227,7 @@ function handleErrors(error) {
             alert(error.info.error.data.message);
         }
         else if (error.info.error.code == 4001) {
-            alert("You have rejected the transaction");
+            alert(M.str.gradereport_finalize.transactionRejected);
         }
         else {
             alert(error.info.error.message);
@@ -237,7 +242,7 @@ function handleErrors(error) {
 }
 function showLoading() {
     Swal.fire({
-        title: 'Loading...',
+        title: M.str.gradereport_finalize.loading,
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading()

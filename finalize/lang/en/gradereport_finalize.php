@@ -24,17 +24,26 @@
  */
 // Index.
 $string['pluginname'] = 'Moodlechain';
-$string['user:view'] = 'View your class\' grades';
-$string['buttonText'] = 'Finalize grades';
-$string['successMessage'] = 'Grades loaded successfully';
-$string['errorMessage'] = 'An error occured';
-$string['popupMessage'] = 'Moodlechain - Are you sure you want to finalize?';
+$string['finalizeButtonText'] = 'Finalize grades';
+$string['verifyButtonText'] = 'Verify grades';
+$string['authorizeButtonText'] = 'Authorize teacher';
+$string['popupMessage'] = 'Moodlechain - Are you sure you want to continue?';
 $string['formNotCompleted'] = 'Make sure you complete all the required fields';
 $string['completeForm'] = 'Moodlechain - Complete the form';
-$string['SchoolId'] = 'School Id';
-$string['Semester'] = 'Semester';
-$string['AcademicYear'] = 'Academic year';
 $string['SubmitButton'] = 'Submit';
 $string['CancelButton'] = 'Cancel';
+$string['chooseActivityForm'] = 'Choose one or more activities to verify';
+$string['chooseActivityValidation'] = 'You must choose at least one activity!';
+$string['chooseTeacher'] = 'Chose the teacher to authorize';
+$string['finalizeSuccess'] = 'Moodlechain - Grades sent to blockchain successfully';
+$string['verificationEnded'] = 'Moodlechain - Verification process ended!';
+$string['verifySuccess'] =  $string['verificationEnded'] .'- No inconsistencies found!';
+$string['verifyFailure'] = $string['verificationEnded'] . ' Inconsistencies found:';
+$string['authorizedSuccess'] = 'Moodlechain - Teacher authorized successfully';
+$string['genericFailure'] = 'Something went wrong';
+$string['transactionRejected'] = 'You have rejected the transaction';
+$string['connectedToContract'] = 'Successfully connected to contract';
+$string['metamaskNotInstalled'] = 'Please install metamask or contact the administrator';
+$string['loading'] = 'Loading...';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>
