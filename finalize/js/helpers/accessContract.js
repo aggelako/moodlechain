@@ -14,7 +14,7 @@ async function accessContract() {
 
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(address, abi, signer);
-            console.log("Successfully connected to contract!");
+            console.log(M.str.gradereport_finalize.connectedToContract);
             return contract;
         }
         catch (err) {
@@ -22,7 +22,7 @@ async function accessContract() {
         }
     }
     else {
-        alert("Please install MetaMask!");
+        alert(M.str.gradereport_finalize.metamaskNotInstalled);
     }
 }
 export default accessContract;

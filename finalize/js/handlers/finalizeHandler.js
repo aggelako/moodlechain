@@ -8,6 +8,9 @@ $(document).ready(function () {
         const jsonData = $(this).data("grades");
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
+        if (results === false) {
+            return alert(M.str.gradereport_finalize.genericFailure);
+        }
         const contract = await accessContract();
         console.log("Finalizing grades for course with id " + parseInt(courseId));
         try {
@@ -26,11 +29,11 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     console.log("Event logged successfully");
-                    alert("Grades added successfully")
+                    alert(M.str.gradereport_finalize.finalizeSuccess)
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
-                    alert('Something went wrong');
+                    alert(M.str.gradereport_finalize.genericFailure);
                 })
             });
         }

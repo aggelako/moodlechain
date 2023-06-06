@@ -11,8 +11,14 @@ $(document).ready(function () {
             })
         }
         const gradingActivities = await selectActivitiesPopUp(activities);
+        if (gradingActivities === false) {
+            return alert(M.str.gradereport_finalize.genericFailure);
+        }
         console.log("Activities selected, retrieving grades from blockchain...");
         const results = await getExtraDataPopUp(courseId, jsonData);
+        if (results === false) {
+            return alert(M.str.gradereport_finalize.genericFailure);
+        }
         const [semester, year, course] = results[0].semesterYearCourse.split("_");
         let objectToCompare = transformGrades(results);
         const contract = await accessContract();
