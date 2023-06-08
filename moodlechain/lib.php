@@ -15,32 +15,32 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of the finalize grader report class
+ * Definition of the moodlechain grader report class
  *
- * @package   gradereport_grader_finalize
+ * @package   gradereport_grader_moodlechain
  * @copyright 2023 Athanasios Angelakopoulos
  */
 require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 /**
- * Class providing an API for the finalize grades plugin to export the grades in a certain format.
- * @uses grade_report_grader_finalize
+ * Class providing an API for the moodlechain grades plugin to export the grades in a certain format.
+ * @uses grade_report_grader_moodlechain
  * @copyright 2023 Athanasios Angelakopoulos
  */
-class grade_report_grader_finalize extends grade_report_grader
+class grade_report_grader_moodlechain extends grade_report_grader
 {   private $numberOfUsers;
     public function __construct($courseid, $gpr, $context, $page, $sortitemid, $totalUsers) {
         parent::__construct($courseid, $gpr, $context, $page, $sortitemid);
         $this->numberOfUsers = $totalUsers;
     }    
-    private $finalize_grading_object;
+    private $moodlechain_grading_object;
     public function get_students_per_page(): int {
         return (int) $this->numberOfUsers ? $this->numberOfUsers : 0;
     }
     public function get_raw_grades(){
         global $DB, $USER;
-        $this->finalize_grading_object = array();
+        $this->moodlechain_grading_object = array();
         foreach ($this->gtree->items as $item) {
             $gradeitem = array();
             $gradingUsers = get_enrolled_users($this->context, 'mod/assign:grade');
@@ -81,9 +81,9 @@ class grade_report_grader_finalize extends grade_report_grader
                     'rawGrade' => $this->grades[$user->id][$item->id]->finalgrade,
                 );
             }
-            array_push($this->finalize_grading_object, array('activityName'=>$name,'grades'=>$gradeitem));
+            array_push($this->moodlechain_grading_object, array('activityName'=>$name,'grades'=>$gradeitem));
         }
         
-        return json_encode($this->finalize_grading_object);
+        return json_encode($this->moodlechain_grading_object);
     }
 }

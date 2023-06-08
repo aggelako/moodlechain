@@ -16,7 +16,7 @@
 
 /**
  *
- * @package   gradereport_finalize
+ * @package   gradereport_moodlechain
  * @copyright Athanasios Angelakopoulos
  */
 
@@ -30,8 +30,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 //Isws xreiastei sto neo moodle installation, to $url->out
-// $url = new moodle_url($CFG->wwwroot . '/grade/report/finalize/handleFinalize.php');
-// $internal_url_finalize = $url->out();
+// $url = new moodle_url($CFG->wwwroot . '/grade/report/moodlechain/handlemoodlechain.php');
+// $internal_url_moodlechain = $url->out();
 require_once('../../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
 global $USER, $DB;
@@ -56,6 +56,6 @@ $record->semesteryearcourse = $isAuthorize ? "" : $semesterYearCourse;
 $record->actiontype = $actionArray[$action];
 $record->time = time();
 var_dump($record);
-echo $DB->insert_record('gradereport_finalize_history', $record);
+echo $DB->insert_record('gradereport_moodlechain', $record);
 
 

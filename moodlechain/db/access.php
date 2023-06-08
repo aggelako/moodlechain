@@ -22,7 +22,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 $capabilities = array(
-    'gradereport/finalize:view' => array(
+    'gradereport/moodlechain:view' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,

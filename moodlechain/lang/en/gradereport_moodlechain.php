@@ -16,7 +16,7 @@
 
 /**
  *
- * @package   gradereport_finalize
+ * @package   gradereport_moodlechain
  * @author  Athanasios Angelakopoulos
  */
 // Index.
@@ -43,5 +43,6 @@ $string['connectedToContract'] = 'Successfully connected to contract';
 $string['metamaskNotInstalled'] = 'Please install metamask or contact the administrator';
 $string['loading'] = 'Loading...';
 $string['wrongNetwork'] = 'Metamask account is connected to the wrong type of network!';
+$string['noPermissionError'] = 'You do not have permission to perform this action, contact administrator';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>

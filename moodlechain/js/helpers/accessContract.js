@@ -8,13 +8,13 @@ async function accessContract() {
             const provider = new ethers.BrowserProvider(window.ethereum)
             const providerNetwork = await provider.getNetwork();
             if (providerNetwork.chainId !== network.chainId) {
-                console.log(M.str.gradereport_finalize.wrongNetwork, providerNetwork.chainId);
+                console.log(M.str.gradereport_moodlechain.wrongNetwork, providerNetwork.chainId);
                 return;
             }
 
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(address, abi, signer);
-            console.log(M.str.gradereport_finalize.connectedToContract);
+            console.log(M.str.gradereport_moodlechain.connectedToContract);
             return contract;
         }
         catch (err) {
@@ -22,7 +22,7 @@ async function accessContract() {
         }
     }
     else {
-        alert(M.str.gradereport_finalize.metamaskNotInstalled);
+        alert(M.str.gradereport_moodlechain.metamaskNotInstalled);
     }
 }
 export default accessContract;

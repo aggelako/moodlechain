@@ -1,7 +1,7 @@
 function getExtraDataPopUp(courseId, jsonData) {
     return new Promise((resolve) => {
         Swal.fire({
-            title: M.str.gradereport_finalize.completeForm,
+            title: M.str.gradereport_moodlechain.completeForm,
             html:
                 '<label for="school-id-input">School ID:</label>' +
                 '<input id="school-id-input" class="swal2-input" type="text" name="schoolId" required>' +
@@ -25,8 +25,8 @@ function getExtraDataPopUp(courseId, jsonData) {
                 '</select>',
             focusConfirm: false,
             showCancelButton: true,
-            confirmButtonText: M.str.gradereport_finalize.SubmitButton,
-            cancelButtonText: M.str.gradereport_finalize.CancelButton,
+            confirmButtonText: M.str.gradereport_moodlechain.SubmitButton,
+            cancelButtonText: M.str.gradereport_moodlechain.CancelButton,
             preConfirm: () => {
                 // Retrieve the input values from the popup
                 const schoolId = Swal.getPopup().querySelector('#school-id-input').value;
@@ -53,7 +53,7 @@ function getExtraDataPopUp(courseId, jsonData) {
                 }
                 //Validate the input values
                 if (!isValid) {
-                    Swal.showValidationMessage(M.str.gradereport_finalize.formNotCompleted);
+                    Swal.showValidationMessage(M.str.gradereport_moodlechain.formNotCompleted);
                 }
                 // Return an object with the input values
                 return { schoolId, semester, academicYear };
@@ -82,7 +82,7 @@ function getExtraDataPopUp(courseId, jsonData) {
 function confirmationPopUp(result, courseId, jsonData) {
     return new Promise((resolve) => {
         Swal.fire({
-            title: M.str.gradereport_finalize.popupMessage,
+            title: M.str.gradereport_moodlechain.popupMessage,
             html:
                 '<label>School ID:</label><span>' + result.value.schoolId + '</span><br>' +
                 '<label>Semester:</label><span>' + result.value.semester + '</span><br>' +
@@ -112,10 +112,10 @@ function selectActivitiesPopUp(activities) {
             html += "<label for='object-" + i + "'>" + activities[i].name + "</label><br>";
         }
         Swal.fire({
-            title: M.str.gradereport_finalize.chooseActivityForm,
+            title: M.str.gradereport_moodlechain.chooseActivityForm,
             html: html,
             showCancelButton: true,
-            confirmButtonText: M.str.gradereport_finalize.SubmitButton,
+            confirmButtonText: M.str.gradereport_moodlechain.SubmitButton,
             preConfirm: () => {
                 // Get the selected objects from the checkboxes
                 var selectedObjects = [];
@@ -126,7 +126,7 @@ function selectActivitiesPopUp(activities) {
                     }
                 }
                 if (selectedObjects.length == 0) {
-                    Swal.showValidationMessage(M.str.gradereport_finalize.chooseActivityValidation);
+                    Swal.showValidationMessage(M.str.gradereport_moodlechain.chooseActivityValidation);
                 }
                 return selectedObjects;
             }
@@ -152,12 +152,12 @@ function showTeacherPopUp(teachers) {
 
         // Display the SweetAlert dialog with a dropdown menu of teacher names
         Swal.fire({
-            title: M.str.gradereport_finalize.chooseTeacher,
+            title: M.str.gradereport_moodlechain.chooseTeacher,
             input: 'select',
             inputOptions: teacherOptions,
             showCancelButton: true,
-            confirmButtonText: M.str.gradereport_finalize.SubmitButton,
-            cancelButtonText: M.str.gradereport_finalize.CancelButton,
+            confirmButtonText: M.str.gradereport_moodlechain.SubmitButton,
+            cancelButtonText: M.str.gradereport_moodlechain.CancelButton,
         }).then((result) => {
             if (result.isConfirmed) {
                 resolve(result.value, teacherOptions[result.value]);
@@ -185,11 +185,11 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     let title = "";
 
     if (inconsistencies[0].length == 0) {
-        title = M.str.gradereport_finalize.verifySuccess;
+        title = M.str.gradereport_moodlechain.verifySuccess;
         icon = "success";
     }
     else {
-        title = M.str.gradereport_finalize.verifyFailure;
+        title = M.str.gradereport_moodlechain.verifyFailure;
         html += "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/table.css\">";
         html += "<table>\
         <thead>\
@@ -223,26 +223,39 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
 }
 function handleErrors(error) {
     try {
-        if (error.info.error.code == -32603) {
-            alert(error.info.error.data.message);
+
+
+        if (error.error != undefined && error.error.code != undefined) {
+            if (error.error.code == -32603) {
+                alert(M.str.gradereport_moodlechain.noPermissionError);
+                return
+            }
         }
-        else if (error.info.error.code == 4001) {
-            alert(M.str.gradereport_finalize.transactionRejected);
+        else if (error.info.error != undefined && error.info.error.code != undefined) {
+            if (error.info.error.code == 4001) {
+                alert(M.str.gradereport_moodlechain.transactionRejected);
+                return
+            }
+            else {
+                alert(error.info.error.data.message);
+                return
+            }
         }
         else {
-            alert(error.info.error.message);
+            alert(M.str.gradereport_moodlechain.genericFailure);
             console.log(error);
+            return
         }
     }
-    catch {
-        alert(error);
-        console.log(error);
+    catch (e) {
+        alert(M.str.gradereport_moodlechain.genericFailure);
+        console.log(e);
+        return
     }
-    return;
 }
 function showLoading() {
     Swal.fire({
-        title: M.str.gradereport_finalize.loading,
+        title: M.str.gradereport_moodlechain.loading,
         allowOutsideClick: false,
         onBeforeOpen: () => {
             Swal.showLoading()

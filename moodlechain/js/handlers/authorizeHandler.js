@@ -6,7 +6,7 @@ $(document).ready(function () {
         const teachers = $(this).data("teachers");
         const teacherId = await showTeacherPopUp(teachers);
         if (teacherId === false) {
-            return alert(M.str.gradereport_finalize.genericFailure);
+            return alert(M.str.gradereport_moodlechain.genericFailure);
         }
         console.log(teachers[teacherId] + " selected for authorization, adding permissions...");
         const contract = await accessContract();
@@ -23,11 +23,11 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     console.log("Event logged successfully");
-                    alert(M.str.gradereport_finalize.authorizedSuccess);
+                    alert(M.str.gradereport_moodlechain.authorizedSuccess);
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
-                    alert(M.str.gradereport_finalize.genericFailure);
+                    alert(M.str.gradereport_moodlechain.genericFailure);
                 })
             });
         }

@@ -25,11 +25,11 @@
 <div class ="button-container">
     {{#showAll}}
         <button id="authorize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-teachers="{{teachers}}" class="finalize_button">{{authorizeButtonText}}</button>
-        <script type="module" src="../finalize/js/handlers/authorizeHandler.js"></script>
+        <script type="module" src="../moodlechain/js/handlers/authorizeHandler.js"></script>
     {{/showAll}}
     <button id="verify_button" data-course-id="{{courseId}}" data-grades="{{grades}}" class="finalize_button">{{verifyButtonText}}</button>
-    <script type="module" src="../finalize/js/handlers/verifyHandler.js"></script>
+    <script type="module" src="../moodlechain/js/handlers/verifyHandler.js"></script>
     <button id="finalize_button" data-course-id="{{courseId}}" data-grades="{{grades}}" data-user-Id ="{{userId}}" class="finalize_button">{{finalizeButtonText}}</button>
-    <script type="module" src="../finalize/js/handlers/finalizeHandler.js"></script>
+    <script type="module" src="../moodlechain/js/handlers/finalizeHandler.js"></script>
 </div>
 <!--</form>-->

@@ -1,7 +1,7 @@
 import accessContract from "../helpers/accessContract.js";
 import { getExtraDataPopUp, handleErrors, showLoading, hideLoading } from "../helpers/popUpWindows.js"
 
-//Event handler for finalize grades button click
+//Event handler for moodlechain grades button click
 $(document).ready(function () {
     $("#finalize_button").click(async function () {
         const courseId = $(this).data("courseId");
@@ -9,7 +9,7 @@ $(document).ready(function () {
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
         if (results === false) {
-            return alert(M.str.gradereport_finalize.genericFailure);
+            return alert(M.str.gradereport_moodlechain.genericFailure);
         }
         const contract = await accessContract();
         console.log("Finalizing grades for course with id " + parseInt(courseId));
@@ -29,11 +29,11 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     console.log("Event logged successfully");
-                    alert(M.str.gradereport_finalize.finalizeSuccess)
+                    alert(M.str.gradereport_moodlechain.finalizeSuccess)
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
-                    alert(M.str.gradereport_finalize.genericFailure);
+                    alert(M.str.gradereport_moodlechain.genericFailure);
                 })
             });
         }
