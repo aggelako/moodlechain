@@ -34,8 +34,6 @@
 // $internal_url_finalize = $url->out();
 require_once('../../../config.php');
 require_once($CFG->libdir . '/csvlib.class.php');
-
-// Get the current Moodle context
 global $USER, $DB;
 $userid = $USER->id;
 $actionArray = array(
@@ -44,37 +42,20 @@ $actionArray = array(
     'authorizeTeacher'=> 2,
     );       
 $action = required_param('action', PARAM_TEXT);
-if( $action == 'addGrades' || $action == 'verifyGrades'){
+$isAuthorize = $action == 'authorizeTeacher';
 
-    $courseid = required_param('courseId', PARAM_TEXT);
-    $schoolId = required_param('schoolId', PARAM_TEXT);
-    $semesterYearCourse = required_param('semesterYearCourse', PARAM_TEXT);
-    $record = new stdClass();
-    $record->userid = $userid;
-    $record->courseid = $courseid;
-    $record->teacherid ="";
-    $record->schoolid = $schoolId;
-    $record->semesteryearcourse = $semesterYearCourse;
-    $record->actiontype = $actionArray[$action];
-    $record->time = time();
-    var_dump($record);
-    echo $DB->insert_record('gradereport_finalize_history', $record);
-}
-else if($action == 'authorizeTeacher'){
-    $courseid = required_param('courseId', PARAM_TEXT);
-    $teacherId = required_param('teacherId', PARAM_TEXT);
-    $record = new stdClass();
-    $record->userid = $userid;
-    $record->courseid = $courseid;
-    $record->teacherid = $teacherId;
-    $record->schoolid = "";
-    $record->semesteryearcourse = "";
-    $record->actiontype = $actionArray[$action];
-    $record->time = time();
-    var_dump($record);
-    echo $DB->insert_record('gradereport_finalize_history', $record);
-}
-else{
-    return;
-}
+$courseid = required_param('courseId', PARAM_TEXT);
+$schoolId = $isAuthorize ? "" : required_param('schoolId', PARAM_TEXT);
+$semesterYearCourse = $isAuthorize ? "" : required_param('semesterYearCourse', PARAM_TEXT);
+$record = new stdClass();
+$record->userid = $userid;
+$record->courseid = $courseid;
+$record->teacherid =$isAuthorize ? required_param('teacherId', PARAM_TEXT) : "";
+$record->schoolid = $isAuthorize ? "" : $schoolId;
+$record->semesteryearcourse = $isAuthorize ? "" : $semesterYearCourse;
+$record->actiontype = $actionArray[$action];
+$record->time = time();
+var_dump($record);
+echo $DB->insert_record('gradereport_finalize_history', $record);
+
 
