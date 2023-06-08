@@ -11,7 +11,7 @@ $(document).ready(function () {
         console.log(teachers[teacherId] + " selected for authorization, adding permissions...");
         const contract = await accessContract();
         try {
-            const response = await contract.addPermissions(teacherId.toString(), parseInt(courseId));
+            await contract.addPermissions(teacherId.toString(), parseInt(courseId));
             console.log("Permissions added, logging event on database...")
             $.ajax({
                 type: "POST",

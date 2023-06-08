@@ -42,5 +42,6 @@ $string['transactionRejected'] = 'You have rejected the transaction';
 $string['connectedToContract'] = 'Successfully connected to contract';
 $string['metamaskNotInstalled'] = 'Please install metamask or contact the administrator';
 $string['loading'] = 'Loading...';
+$string['wrongNetwork'] = 'Metamask account is connected to the wrong type of network!';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>

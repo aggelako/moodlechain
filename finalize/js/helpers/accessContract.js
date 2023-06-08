@@ -8,7 +8,7 @@ async function accessContract() {
             const provider = new ethers.BrowserProvider(window.ethereum)
             const providerNetwork = await provider.getNetwork();
             if (providerNetwork.chainId !== network.chainId) {
-                console.log("Wrong network!", providerNetwork.chainId);
+                console.log(M.str.gradereport_finalize.wrongNetwork, providerNetwork.chainId);
                 return;
             }
 

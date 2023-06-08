@@ -37,7 +37,7 @@ $PAGE->requires->css('/grade/report/finalize/css/finalize_button.css', true);
 $PAGE->set_pagelayout('report');
 
 // Load the language strings for javascript. We need to update the list every time we add a new string
-$strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation');
+$strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation', 'wrongNetwork', 'loading');
 foreach ($strings as $string) {
     $PAGE->requires->string_for_js($string, 'gradereport_finalize');
 }
