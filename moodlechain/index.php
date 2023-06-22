@@ -114,7 +114,6 @@ $lastinitial  = $SESSION->gradereport["filtersurname-{$context->id}"] ?? '';
 $totalusers = $report->get_numusers(true, false);
 $renderer = $PAGE->get_renderer('core_user');
 echo $renderer->user_search($url, $firstinitial, $lastinitial, $numusers, $totalusers, $report->currentgroupname);
-
 //show warnings if any
 foreach ($warnings as $warning) {
     echo $OUTPUT->notification($warning);
@@ -147,10 +146,16 @@ foreach($teachersBuffer as $teacher){
         ];
     }
 }
-$reportAll = new grade_report_grader_moodlechain($courseid, $gpr, $context, $page, $sortitemid, $numusers);
+$firstinit = $SESSION->gradereport["filterfirstname-{$context->id}"]??'';
+$lastinit  = $SESSION->gradereport["filtersurname-{$context->id}"]??'';
+$SESSION->gradereport["filterfirstname-{$context->id}"] = '';//$graderreportsifirst;
+$SESSION->gradereport["filtersurname-{$context->id}"] = '';//$graderreportsilast;
+$reportAll = new grade_report_grader_moodlechain($courseid, $gpr, $context, 0, $sortitemid, $totalusers);
 $reportAll->load_users();
 $reportAll->load_final_grades();
 $allGrades = $reportAll->get_raw_grades();
+$SESSION->gradereport["filterfirstname-{$context->id}"] = $firstinit;
+$SESSION->gradereport["filtersurname-{$context->id}"] = $lastinit;
 
 echo $OUTPUT->render_from_template('gradereport_moodlechain/allButtons', array('finalizeButtonText'=>get_string('finalizeButtonText','gradereport_moodlechain'),'verifyButtonText'=>get_string('verifyButtonText','gradereport_moodlechain'), 'authorizeButtonText'=>get_string('authorizeButtonText','gradereport_moodlechain'),'showAll'=>is_siteadmin($USER->id),'courseId' => $courseid,'grades'=>$allGrades,'teachers'=>json_encode($teachers),'userId'=>$USER->id));
 if (!empty($studentsperpage) && $studentsperpage >= 20) {
