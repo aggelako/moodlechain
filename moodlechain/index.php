@@ -36,6 +36,9 @@ $PAGE->set_url(new moodle_url($CFG->wwwroot . '/grade/report/moodlechain/index.p
 $PAGE->requires->css('/grade/report/moodlechain/css/finalize_button.css', true);
 $PAGE->set_pagelayout('report');
 
+$graderreportsifirst  = optional_param('sifirst', null, PARAM_NOTAGS);
+$graderreportsilast   = optional_param('silast', null, PARAM_NOTAGS);
+
 // Load the language strings for javascript. We need to update the list every time we add a new string
 $strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation', 'wrongNetwork', 'loading', 'noPermissionError');
 foreach ($strings as $string) {
