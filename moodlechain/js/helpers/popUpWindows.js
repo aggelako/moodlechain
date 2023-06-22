@@ -218,6 +218,7 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
     Swal.fire({
         title: title,
         html: html,
+        width: 'auto',
         icon: icon,
     });
 }
