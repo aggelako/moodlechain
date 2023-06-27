@@ -43,9 +43,18 @@ $string['connectedToContract'] = 'Successfully connected to contract';
 $string['metamaskNotInstalled'] = 'Please install metamask or contact the administrator';
 $string['loading'] = 'Loading...';
 $string['wrongNetwork'] = 'Metamask account is connected to the wrong type of network!';
-$string['noPermissionError'] = 'You do not have permission to perform this action, contact administrator';
+$string['noPermissionError'] = 'You do not have permission to perform this action, contact administrator!';
 $string['Yes'] = 'Yes';
 $string['No'] = 'No';
 $string['formCancelation'] = 'Form canceled';
+$string['missingGrade'] = 'Grade missing';
+$string['studentName'] = 'Student name';
+$string['activityName'] = 'Activity name';
+$string['gradeOnBlockchain'] = 'Grade on blockchain';
+$string['gradeOnMoodle'] = 'Grade on Moodle';
+$string['schoolId']='School ID';
+$string['semester']='Semester';
+$string['academicYear']='Academic year';
+$string['select']='Select';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>

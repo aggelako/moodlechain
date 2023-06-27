@@ -40,7 +40,7 @@ $graderreportsifirst  = optional_param('sifirst', null, PARAM_NOTAGS);
 $graderreportsilast   = optional_param('silast', null, PARAM_NOTAGS);
 
 // Load the language strings for javascript. We need to update the list every time we add a new string
-$strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation', 'wrongNetwork', 'loading', 'noPermissionError','Yes','No','formCancelation');
+$strings = array('popupMessage', 'formNotCompleted', 'completeForm', 'SubmitButton', 'CancelButton', 'chooseActivityForm', 'chooseTeacher', 'finalizeSuccess', 'verifySuccess', 'verifyFailure', 'authorizedSuccess', 'genericFailure', 'transactionRejected', 'connectedToContract', 'metamaskNotInstalled', 'chooseActivityValidation', 'wrongNetwork', 'loading', 'noPermissionError','Yes','No','formCancelation','missingGrade','studentName','activityName','gradeOnBlockchain','gradeOnMoodle','schoolId','semester','academicYear','select');
 foreach ($strings as $string) {
     $PAGE->requires->string_for_js($string, 'gradereport_moodlechain');
 }

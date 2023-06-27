@@ -3,11 +3,11 @@ function getExtraDataPopUp(courseId, jsonData) {
         Swal.fire({
             title: M.str.gradereport_moodlechain.completeForm,
             html:
-                '<label for="school-id-input">School ID:</label>' +
+                '<label for="school-id-input">' + M.str.gradereport_moodlechain.schoolId + ':</label>' +
                 '<input id="school-id-input" class="swal2-input" type="text" name="schoolId" required>' +
-                '<label for="semester-input">Semester:</label>' +
+                '<label for="semester-input">' + M.str.gradereport_moodlechain.semester + ':</label>' +
                 '<select id="semester-input" class="swal2-input" name="semester" required>' +
-                '<option value="">Select Semester</option>' +
+                '<option value="">' + M.str.gradereport_moodlechain.select + ' ' + M.str.gradereport_moodlechain.semester + '</option>' +
                 '<option value="1">1</option>' +
                 '<option value="2">2</option>' +
                 '<option value="3">3</option>' +
@@ -19,9 +19,9 @@ function getExtraDataPopUp(courseId, jsonData) {
                 '<option value="9">9</option>' +
                 '<option value="10">10</option>' +
                 '</select>' +
-                '<label for="academic-year-input">Academic Year:</label>' +
+                '<label for="academic-year-input">' + M.str.gradereport_moodlechain.academicYear + ':</label>' +
                 '<select id="academic-year-input" class="swal2-input" name="academicYear" required>' +
-                '<option value="">Select Academic Year</option>' +
+                '<option value="">' + M.str.gradereport_moodlechain.select + ' ' + M.str.gradereport_moodlechain.academicYear + '</option>' +
                 '</select>',
             focusConfirm: false,
             showCancelButton: true,
@@ -87,9 +87,9 @@ function confirmationPopUp(courseData, courseId, jsonData) {
         Swal.fire({
             title: M.str.gradereport_moodlechain.popupMessage,
             html:
-                '<label>School ID:</label><span>' + courseData.value.schoolId + '</span><br>' +
-                '<label>Semester:</label><span>' + courseData.value.semester + '</span><br>' +
-                '<label>Academic Year:</label><span>' + courseData.value.academicYear + '</span><br>',
+                '<label>' + M.str.gradereport_moodlechain.schoolId + ':</label><span>' + courseData.value.schoolId + '</span><br>' +
+                '<label>' + M.str.gradereport_moodlechain.semester + ':</label><span>' + courseData.value.semester + '</span><br>' +
+                '<label>' + M.str.gradereport_moodlechain.academicYear + ':</label><span>' + courseData.value.academicYear + '</span><br>',
             focusConfirm: false,
             showCancelButton: true,
             confirmButtonText: M.str.gradereport_moodlechain.Yes,
@@ -208,20 +208,22 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
         html += "<table>\
         <thead>\
           <tr>\
-            <th>Student name</th>\
-            <th>Activity name</th>\
-            <th>Grade on blockchain</th>\
-            <th>Current grade</th>\
+            <th>"+ M.str.gradereport_moodlechain.studentName + "</th>\
+            <th>"+ M.str.gradereport_moodlechain.activityName + "</th>\
+            <th>"+ M.str.gradereport_moodlechain.gradeOnBlockchain + "</th>\
+            <th>"+ M.str.gradereport_moodlechain.gradeOnMoodle + "</th>\
           </tr>\
         </thead>\
         <tbody>";
         for (let i = 0; i < inconsistencies.length; i++) {
             for (let j = 0; j < inconsistencies[i].length; j++) {
+                let grade_1 = inconsistencies[i][j]["gradeInBlockchain"] || M.str.gradereport_moodlechain.missingGrade;
+                let grade_2 = inconsistencies[i][j]["currentGrade"] || M.str.gradereport_moodlechain.missingGrade;
                 html += "<tr>\
                 <td class=\"name\">" + inconsistencies[i][j]["studentName"] + "</td>\
                 <td class=\"name\">" + inconsistencies[i][j]["activityName"] + "</td>\
-                <td>" + inconsistencies[i][j]["gradeInBlockchain"] + "</td>\
-                <td>" + inconsistencies[i][j]["currentGrade"] + "</td>\
+                <td>" + grade_1 + "</td>\
+                <td>" + grade_2 + "</td>\
                 </tr>";
             }
         }

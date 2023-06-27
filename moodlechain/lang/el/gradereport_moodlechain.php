@@ -48,5 +48,14 @@ $string['noPermissionError'] = 'Δεν έχετε δικαίωμα να εκτε
 $string['Yes'] = 'Ναι';
 $string['No'] = 'Όχι';
 $string['formCancelation'] = 'Η υποβολή της φόρμας ακυρώθηκε';
+$string['missingGrade'] = 'O βαθμός λείπει';
+$string['studentName'] = 'Όνομα φοιτητή';
+$string['activityName'] = 'Όνομα δραστηριότητας';
+$string['gradeOnBlockchain'] = 'Βαθμός στο blockchain';
+$string['gradeOnMoodle'] = 'Βαθμός στο Moodle';
+$string['schoolId']='Αναγνωριστικό ID Σχολής';
+$string['semester']='Εξάμηνο';
+$string['academicYear']='Ακαδημαϊκό έτος';
+$string['select']='Επιλέξτε';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>
