@@ -45,5 +45,8 @@ $string['metamaskNotInstalled'] = 'Παρακαλώ εγκαταστήστε τ�
 $string['loading'] = 'Φορτώνει...';
 $string['wrongNetwork'] = 'Ο λογαριασμός Metamask είναι συνδεδεμένος σε λάθος τύπο δικτύου!';
 $string['noPermissionError'] = 'Δεν έχετε δικαίωμα να εκτελέσετε αυτή την ενέργεια, επικοινωνήστε με τον διαχειριστή!';
+$string['Yes'] = 'Ναι';
+$string['No'] = 'Όχι';
+$string['formCancelation'] = 'Η υποβολή της φόρμας ακυρώθηκε';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>

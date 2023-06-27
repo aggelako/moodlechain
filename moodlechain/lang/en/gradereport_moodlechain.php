@@ -44,5 +44,8 @@ $string['metamaskNotInstalled'] = 'Please install metamask or contact the admini
 $string['loading'] = 'Loading...';
 $string['wrongNetwork'] = 'Metamask account is connected to the wrong type of network!';
 $string['noPermissionError'] = 'You do not have permission to perform this action, contact administrator';
+$string['Yes'] = 'Yes';
+$string['No'] = 'No';
+$string['formCancelation'] = 'Form canceled';
 //for any other string to be used in the JS file, add it here and then add it to the index.php file as a parameter to the require to js call
 ?>
