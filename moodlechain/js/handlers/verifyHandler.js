@@ -12,18 +12,22 @@ $(document).ready(function () {
         }
         const gradingActivities = await selectActivitiesPopUp(activities);
         if (gradingActivities === "dismissed") {
-            return alert(M.str.gradereport_moodlechain.formCancelation);
+            alert(M.str.gradereport_moodlechain.formCancelation);
+            return location.reload();
         }
         if (gradingActivities === false) {
-            return alert(M.str.gradereport_moodlechain.genericFailure);
+            alert(M.str.gradereport_moodlechain.genericFailure);
+            return location.reload();
         }
         console.log("Activities selected, retrieving grades from blockchain...");
         const results = await getExtraDataPopUp(courseId, jsonData);
         if (results === "dismissed") {
-            return alert(M.str.gradereport_moodlechain.formCancelation);
+            alert(M.str.gradereport_moodlechain.formCancelation);
+            return location.reload();
         }
         if (results === false) {
-            return alert(M.str.gradereport_moodlechain.genericFailure);
+            alert(M.str.gradereport_moodlechain.genericFailure);
+            return location.reload();
         }
         const [semester, year, course] = results[0].semesterYearCourse.split("_");
         let objectToCompare = transformGrades(results);
@@ -36,7 +40,7 @@ $(document).ready(function () {
 
                 if (response.length == 0) {
                     alert("No grades found");
-                    return;
+                    return location.reload();
                 }
                 else {
                     incostisencies.push(compareGrades(response, objectToCompare[gradingActivities[i]]));
@@ -46,7 +50,7 @@ $(document).ready(function () {
                 hideLoading();
                 console.log(err)
                 handleErrors(err);
-                return;
+                return location.reload();
             }
         }
         console.log("Grades retrieved from blockchain, comparing...")

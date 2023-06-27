@@ -234,7 +234,10 @@ async function showIncotisencies(inconsistencies, semester, year, courseId) {
         html: html,
         width: 'auto',
         icon: icon,
+    }).then((result) => {
+        location.reload();
     });
+
 }
 function handleErrors(error) {
     try {

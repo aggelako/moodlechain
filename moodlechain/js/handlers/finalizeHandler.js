@@ -9,10 +9,14 @@ $(document).ready(function () {
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
         if (results === "dismissed") {
-            return alert(M.str.gradereport_moodlechain.formCancelation);
+            alert(M.str.gradereport_moodlechain.formCancelation);
+            return location.reload();
+
         }
         if (results === false) {
-            return alert(M.str.gradereport_moodlechain.genericFailure);
+            alert(M.str.gradereport_moodlechain.genericFailure);
+            return location.reload();
+
         }
         const contract = await accessContract();
         console.log("Finalizing grades for course with id " + parseInt(courseId));
@@ -33,10 +37,12 @@ $(document).ready(function () {
                 success: function (response) {
                     console.log("Event logged successfully");
                     alert(M.str.gradereport_moodlechain.finalizeSuccess)
+                    return location.reload();
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
                     alert(M.str.gradereport_moodlechain.genericFailure);
+                    return location.reload();
                 })
             });
         }
@@ -44,7 +50,7 @@ $(document).ready(function () {
             hideLoading();
             console.log(err)
             handleErrors(err);
-            return;
+            return location.reload();
         }
     });
 });

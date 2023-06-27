@@ -6,10 +6,13 @@ $(document).ready(function () {
         const teachers = $(this).data("teachers");
         const teacherId = await showTeacherPopUp(teachers);
         if (teacherId === "dismissed") {
-            return alert(M.str.gradereport_moodlechain.formCancelation);
+            alert(M.str.gradereport_moodlechain.formCancelation);
+            return location.reload();
+
         }
         if (teacherId === false) {
-            return alert(M.str.gradereport_moodlechain.genericFailure);
+            alert(M.str.gradereport_moodlechain.genericFailure);
+            return location.reload();
         }
         console.log(teachers[teacherId] + " selected for authorization, adding permissions...");
         const contract = await accessContract();
@@ -27,16 +30,18 @@ $(document).ready(function () {
                 success: function (response) {
                     console.log("Event logged successfully");
                     alert(M.str.gradereport_moodlechain.authorizedSuccess);
+                    return location.reload();
                 },
                 error: ((jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR, textStatus, errorThrown);
                     alert(M.str.gradereport_moodlechain.genericFailure);
+                    return location.reload();
                 })
             });
         }
         catch (err) {
             handleErrors(err);
-            return;
+            return location.reload();
         }
 
     });
