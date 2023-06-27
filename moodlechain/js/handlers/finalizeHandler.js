@@ -8,6 +8,9 @@ $(document).ready(function () {
         const jsonData = $(this).data("grades");
         const userId = $(this).data("userId");
         const results = await getExtraDataPopUp(courseId, jsonData);
+        if (results === "dismissed") {
+            return alert(M.str.gradereport_moodlechain.formCancelation);
+        }
         if (results === false) {
             return alert(M.str.gradereport_moodlechain.genericFailure);
         }

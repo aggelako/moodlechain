@@ -11,11 +11,17 @@ $(document).ready(function () {
             })
         }
         const gradingActivities = await selectActivitiesPopUp(activities);
+        if (gradingActivities === "dismissed") {
+            return alert(M.str.gradereport_moodlechain.formCancelation);
+        }
         if (gradingActivities === false) {
             return alert(M.str.gradereport_moodlechain.genericFailure);
         }
         console.log("Activities selected, retrieving grades from blockchain...");
         const results = await getExtraDataPopUp(courseId, jsonData);
+        if (results === "dismissed") {
+            return alert(M.str.gradereport_moodlechain.formCancelation);
+        }
         if (results === false) {
             return alert(M.str.gradereport_moodlechain.genericFailure);
         }

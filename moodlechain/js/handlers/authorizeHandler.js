@@ -5,6 +5,9 @@ $(document).ready(function () {
         const courseId = $(this).data("courseId");
         const teachers = $(this).data("teachers");
         const teacherId = await showTeacherPopUp(teachers);
+        if (teacherId === "dismissed") {
+            return alert(M.str.gradereport_moodlechain.formCancelation);
+        }
         if (teacherId === false) {
             return alert(M.str.gradereport_moodlechain.genericFailure);
         }

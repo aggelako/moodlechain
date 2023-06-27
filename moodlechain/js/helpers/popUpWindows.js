@@ -63,6 +63,9 @@ function getExtraDataPopUp(courseId, jsonData) {
             if (result.isConfirmed && result.value) {
                 resolve(confirmationPopUp(result, courseId, jsonData));
             }
+            else if (result.isDismissed) {
+                resolve("dismissed");
+            }
             else {
                 resolve(false);
             }
@@ -79,21 +82,24 @@ function getExtraDataPopUp(courseId, jsonData) {
         }
     });
 }
-function confirmationPopUp(result, courseId, jsonData) {
+function confirmationPopUp(courseData, courseId, jsonData) {
     return new Promise((resolve) => {
         Swal.fire({
             title: M.str.gradereport_moodlechain.popupMessage,
             html:
-                '<label>School ID:</label><span>' + result.value.schoolId + '</span><br>' +
-                '<label>Semester:</label><span>' + result.value.semester + '</span><br>' +
-                '<label>Academic Year:</label><span>' + result.value.academicYear + '</span><br>',
+                '<label>School ID:</label><span>' + courseData.value.schoolId + '</span><br>' +
+                '<label>Semester:</label><span>' + courseData.value.semester + '</span><br>' +
+                '<label>Academic Year:</label><span>' + courseData.value.academicYear + '</span><br>',
             focusConfirm: false,
             showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-        }).then((confirmResult) => {
-            if (confirmResult.isConfirmed) {
-                resolve(formatJSONData(courseId, jsonData, result));
+            confirmButtonText: M.str.gradereport_moodlechain.Yes,
+            cancelButtonText: M.str.gradereport_moodlechain.No,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                resolve(formatJSONData(courseId, jsonData, courseData));
+            }
+            else if (result.isDismissed) {
+                resolve("dismissed");
             }
             else {
                 resolve(false)
@@ -116,6 +122,7 @@ function selectActivitiesPopUp(activities) {
             html: html,
             showCancelButton: true,
             confirmButtonText: M.str.gradereport_moodlechain.SubmitButton,
+            cancelButtonText: M.str.gradereport_moodlechain.CancelButton,
             preConfirm: () => {
                 // Get the selected objects from the checkboxes
                 var selectedObjects = [];
@@ -136,7 +143,11 @@ function selectActivitiesPopUp(activities) {
                 // Do something with the selected objects
                 if (result.value && result.value.length > 0) {
                     resolve(result.value.map(o => o.name));
-                } else {
+                }
+                else if (result.isDismissed) {
+                    resolve("dismissed");
+                }
+                else {
                     resolve(false);
                 }
             });
@@ -161,6 +172,9 @@ function showTeacherPopUp(teachers) {
         }).then((result) => {
             if (result.isConfirmed) {
                 resolve(result.value, teacherOptions[result.value]);
+            }
+            else if (result.isDismissed) {
+                resolve("dismissed");
             }
             else {
                 resolve(false);
