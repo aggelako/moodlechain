@@ -8,7 +8,7 @@ This plugin works together with a private Blockchain where course managers can s
 
 The moodlechain/ folder holds all the plugin files. This plugin belongs to the [Gradebook reports](https://docs.moodle.org/dev/Gradebook_reports) type and can be installed either from through Moodle UI(Site administration>Plugins>Install plugin) or directly in the moodle/grade/report/ folder of the Moodle source code.
 
-The contracts/ folder holds the smart contract we developed to work with the plugin.
+The privateblock-contract/ folder holds the smart contract we developed to work with the plugin.
 
 The blockchain network is up to user's choice, we used the [Ganache and Truffle](https://trufflesuite.com/ganache/) suite to test the plugin and the contract.
 
