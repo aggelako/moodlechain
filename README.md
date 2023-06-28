@@ -15,7 +15,6 @@ The blockchain network is up to user's choice, we used the [Ganache and Truffle]
 # Thesis info
 This was developed as part of my master's thesis with name "Implementation of a Moodle plugin to manage university grades with Blockchain".
 
-## Summary
 In recent years, Blockchain has become increasingly popular as it offers a new approach to storing and sharing data. It is a network of distributed nodes that interact with each other and handle data in a way that ensures their integrity without requiring trust  in a central authority. This decentralized nature of the solution serves to increase the security of the data and has paved the way for many new and innovative applications based on Blockchain. 
 
 Moodle is a widely used free Learning Management System, software for conducting online courses via the Internet, offering integrated e-learning services. Being open-source free software, it gives developers the opportunity to retrieve and extend it by developing new features, it gives developers the opportunity to retrieve and extend it by developing new features. In this way, an ecosystem of educational applications is created on top of Moodle through a now quite mature plugin creating mechanism.
